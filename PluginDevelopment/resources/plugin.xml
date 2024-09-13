@@ -3,7 +3,7 @@
         id="my.first.plugin"
         name="My First Plugin"
         version="1.0"
-        provider-name="FTN Team X"
+        provider-name="FTN Team JPA"
         class="myplugin.MyPlugin">
         <requires>
            <api version="1.0"/>
