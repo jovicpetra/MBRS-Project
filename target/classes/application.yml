@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: application
+  datasource:
+    url: jdbc:postgresql://localhost:5433/beautysalon
+    username: postgres
+    password: pass
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
