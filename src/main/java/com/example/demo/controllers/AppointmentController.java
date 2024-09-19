@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-
 import com.example.demo.models.Appointment;
 import com.example.demo.models.dto.AppointmentDTO;
 
