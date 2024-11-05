@@ -24,7 +24,11 @@ public class FMProperty extends FMElement  {
 		this.lower = lower;
 		this.upper = upper;		
 	}
-	
+
+	public FMProperty() {
+		super();
+	}
+
 	public String getType() {
 		return type;
 	}

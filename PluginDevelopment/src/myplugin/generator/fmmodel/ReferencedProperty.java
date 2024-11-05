@@ -42,7 +42,7 @@ public class ReferencedProperty extends FMProperty {
         return columnName;
     }
 
-    public void setColumnName(Strategy columnName) {
+    public void setColumnName(String columnName) {
         this.columnName = columnName;
     }
 
