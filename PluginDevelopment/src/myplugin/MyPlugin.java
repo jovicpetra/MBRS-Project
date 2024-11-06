@@ -1,6 +1,11 @@
 package myplugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
@@ -29,7 +34,8 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		 * ProjectOptions.xml and take ejb generator options */
 		
 		//for test purpose only:
-		GeneratorOptions ejbOptions = new GeneratorOptions("c:/temp", "ejbclass", "templates", "{0}.java", true, "ejb"); 				
+		String outputPath = getOutputPath();
+		GeneratorOptions ejbOptions = new GeneratorOptions(outputPath, "ejbclass", "templates", "{0}.java", true, "model");
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions);
 				
 		ejbOptions.setTemplateDir(pluginDir + File.separator + ejbOptions.getTemplateDir()); //apsolutna putanja
@@ -48,6 +54,30 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 	
 	public boolean isSupported() {				
 		return true;
+	}
+
+	private String getOutputPath() {
+		String returnVal = "";
+		Properties prop = new Properties();
+		InputStream input = null;
+		try {
+			input = Files.newInputStream(Paths.get("resources/ProjectOptions.xml"));
+			// load a properties file
+			prop.load(input);
+			// get the property value
+			returnVal = prop.getProperty("OUTPUT_PATH");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		return returnVal;
 	}
 }
 
