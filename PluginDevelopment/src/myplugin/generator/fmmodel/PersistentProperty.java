@@ -48,11 +48,11 @@ public class PersistentProperty extends FMProperty {
         this.precision = precision;
     }
 
-    public boolean isId() {
+    public boolean getIsId() {
         return isId;
     }
 
-    public void setId(boolean id) {
+    public void setIsId(boolean id) {
         isId = id;
     }
 
