@@ -5,20 +5,24 @@ public class PersistentProperty extends FMProperty {
     private String columnName;
     private Integer length;
     private Integer precision;
-    private Strategy strategy;
+    private boolean isId;
+    private boolean unique;
+    private boolean nullable;
 
 
 	public PersistentProperty(String name, String type, String visibility, int lower, int upper) {
 		super(name, type, visibility, lower, upper);
 	}
-	
-	public PersistentProperty(String columnName, Integer length, Integer precision, Strategy strategy) {
-        super();
+
+    public PersistentProperty(String columnName, Integer length, Integer precision, boolean isId, boolean unique, boolean nullable) {
         this.columnName = columnName;
-		this.length = length;
-		this.precision = precision;
-		this.strategy = strategy;
-	}
+        this.length = length;
+        this.precision = precision;
+        this.isId = isId;
+        this.unique = unique;
+        this.nullable = nullable;
+    }
+
 
     public String getColumnName() {
 		return columnName;
@@ -44,11 +48,27 @@ public class PersistentProperty extends FMProperty {
         this.precision = precision;
     }
 
-    public Strategy getStrategy() {
-        return strategy;
+    public boolean isId() {
+        return isId;
     }
 
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
+    public void setId(boolean id) {
+        isId = id;
+    }
+
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public void setUnique(boolean unique) {
+        this.unique = unique;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
     }
 }

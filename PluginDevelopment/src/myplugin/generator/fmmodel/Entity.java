@@ -2,18 +2,17 @@ package myplugin.generator.fmmodel;
 
 
 public class Entity extends FMClass {
-    private String tableName;
+	private String tableName;
 
-	/**
-	 * @param name
-	 * @param classPackage
-	 * @param visibility
-	 * @ToDo: add list of methods
-	 */
-	public Entity(String name, String classPackage, String visibility) {
+	public Entity(String name, String classPackage, String visibility, String tableName) {
 		super(name, classPackage, visibility);
+		this.tableName = tableName;
 	}
 
+	public Entity(String tableName) {
+		super();
+		this.tableName = tableName;
+	}
 
 	public String getTableName() {
 		return tableName;
