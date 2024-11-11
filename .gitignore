@@ -8,6 +8,7 @@
 
 # Log files
 *.log
+*.jar
 
 # Build output directory
 /target/
@@ -17,3 +18,5 @@
 /.mvn/
 target/
 build/
+
+OurBeautySalonApp/

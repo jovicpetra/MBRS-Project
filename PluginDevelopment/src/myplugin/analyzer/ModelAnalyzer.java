@@ -3,6 +3,7 @@ package myplugin.analyzer;
 import java.util.Iterator;
 import java.util.List;
 
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.impl.EnumerationLiteralImpl;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import myplugin.generator.fmmodel.*;
 
@@ -107,10 +108,15 @@ public class ModelAnalyzer {
 			fmClass.addProperty(prop);
 
 			// Additional processing for referenced and persistent properties
-	//		ReferencedProperty referencedProperty = prop.getReferencedProperty();
-	//		if (referencedProperty != null) {
-	//			fmClass.addReferencedProperty(referencedProperty);
-	//		}
+			ReferencedProperty referencedProperty = prop.getReferencedProperty();
+			if (referencedProperty != null) {
+				referencedProperty.setName(prop.getName());
+				referencedProperty.setVisibility(prop.getVisibility());
+				referencedProperty.setType(prop.getType());
+				referencedProperty.setLower(prop.getLower());
+				referencedProperty.setUpper(prop.getUpper());
+				fmClass.addReferencedProperty(referencedProperty);
+			}
 			PersistentProperty persistentProperty = prop.getPersistentProperty();
 			if (persistentProperty != null) {
 				persistentProperty.setName(prop.getName());
@@ -170,7 +176,7 @@ public class ModelAnalyzer {
 		FMProperty prop = new FMProperty(attName, typeName, p.getVisibility().toString(), lower, upper);
 
 		// Process referenced properties
-	//	processReferencedPropertyStereotypes(p, prop);
+		processReferencedPropertyStereotypes(p, prop);
 
 		// Process persistent properties (same as before)
 		processPersistentPropertyStereotypes(p, prop);
@@ -198,16 +204,31 @@ public class ModelAnalyzer {
 
 	private void processReferencedPropertyStereotypes(Property p, FMProperty prop) throws AnalyzeException {
 		// Handle ReferencedProperty stereotype
-		Stereotype referencedPropStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "ReferencedProperty");
+		Stereotype referencedPropStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "ManyToOne");
 		if (referencedPropStereotype != null) {
 			FetchType fetch = extractFetchType(p, referencedPropStereotype);
-			CascadeType cascade = extractCascadeType(p, referencedPropStereotype);
-			String columnName = extractStereotypeProperty(p, referencedPropStereotype, "columnName");
-			String joinTable = extractStereotypeProperty(p, referencedPropStereotype, "joinTable");
+			CascadeType cascade = CascadeType.ALL;
+			String mappedBy = "";
+			String joinTable = "";
+			String joinColumn = extractStereotypeProperty(p, referencedPropStereotype, "joinColumn");
 
-			ReferencedProperty referencedProperty = new ReferencedProperty(fetch, cascade, columnName, joinTable);
+			ReferencedProperty referencedProperty = new ReferencedProperty(fetch, cascade, mappedBy, joinTable, joinColumn, ConnectionType.MANY_TO_ONE);
 			prop.setReferencedProperty(referencedProperty);  // Set referenced property
 		}
+
+		Stereotype referencedPropStereotype2 = StereotypesHelper.getAppliedStereotypeByString(p, "OneToMany");
+		if (referencedPropStereotype2 != null) {
+			FetchType fetch = extractFetchType(p, referencedPropStereotype2);
+			CascadeType cascade = extractCascadeType(p, referencedPropStereotype2);
+			String mappedBy = extractStereotypeProperty(p, referencedPropStereotype2, "mappedBy");
+			String joinTable = "";
+			String joinColumn = "";
+
+			ReferencedProperty referencedProperty = new ReferencedProperty(fetch, cascade, mappedBy, joinTable, joinColumn, ConnectionType.ONE_TO_MANY);
+			prop.setReferencedProperty(referencedProperty);  // Set referenced property
+		}
+		/** @ToDo:
+		 * Process other connection types if needed */
 	}
 
 	// Helper method to extract FetchType from stereotype (example, adjust as needed)
@@ -217,12 +238,12 @@ public class ModelAnalyzer {
 			if (tagDef.getName().equals("fetch")) {
 				List value = StereotypesHelper.getStereotypePropertyValue(p, stereotype, "fetch");
 				if (value.size() > 0) {
-					String fetchStr = (String) value.get(0);
-					return FetchType.valueOf(fetchStr);  // Assuming FetchType is an enum
+					EnumerationLiteralImpl fetchEnum = (EnumerationLiteralImpl) value.get(0);
+					return FetchType.valueOf(fetchEnum.getName());
 				}
 			}
 		}
-		return FetchType.LAZY;  // Default fetch strategy, adjust if needed
+		return FetchType.LAZY;
 	}
 
 	// Helper method to extract CascadeType from stereotype (example, adjust as needed)
@@ -232,12 +253,12 @@ public class ModelAnalyzer {
 			if (tagDef.getName().equals("cascade")) {
 				List value = StereotypesHelper.getStereotypePropertyValue(p, stereotype, "cascade");
 				if (value.size() > 0) {
-					String cascadeStr = (String) value.get(0);
-					return CascadeType.valueOf(cascadeStr);  // Assuming CascadeType is an enum
+					EnumerationLiteralImpl cascadeEnum = (EnumerationLiteralImpl) value.get(0);
+					return CascadeType.valueOf(cascadeEnum.getName());
 				}
 			}
 		}
-		return CascadeType.ALL;  // Default cascade type, adjust as needed
+		return CascadeType.ALL;
 	}
 
 	// Helper method to extract String property (columnName, joinTable, etc.)

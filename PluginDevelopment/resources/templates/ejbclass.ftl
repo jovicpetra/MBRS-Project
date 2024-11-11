@@ -2,6 +2,8 @@ package ${class.typePackage}.model;
 
 import java.util.Date;
 import javax.persistence.*;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "${class.name?lower_case}")
@@ -15,26 +17,37 @@ ${class.visibility} class ${class.name} {
     @Column(name = "${property.columnName}", nullable = ${property.nullable?c}, unique = ${property.unique?c}, precision = ${property.precision})
     ${property.visibility} <#if (property.type)=="date">Date<#else>${property.type}</#if> ${property.name};
     </#list>
+    <#list referencedProperties as property>
+    <#if property?? && property.connectionType == "ONE_TO_MANY">
+    @OneToMany(mappedBy = "${property.mappedBy}", cascade = CascadeType.${property.cascade}, fetch = FetchType.${property.fetch})
+    private List<${property.type}> ${property.name} = new ArrayList<>();
+    <#elseif property?? && property.connectionType == "MANY_TO_ONE">
+    @ManyToOne(fetch = FetchType.${property.fetch})
+    @JoinColumn(name = "${property.joinColumn}")
+    private ${property.type} ${property.name};
+    </#if>
+    </#list>
 
     public ${class.name}() { }
 
-    <#list properties as property>
-    <#if property.upper == 1>
+    <#list persistentProperties as property>
+    public <#if (property.type)=="date">Date<#else>${property.type}</#if> get${property.name?cap_first}() { return ${property.name}; }
+
+    public void set${property.name?cap_first}(<#if (property.type)=="date">Date<#else>${property.type}</#if> ${property.name}) { this.${property.name} = ${property.name}; }
+
+    </#list>
+
+    <#list referencedProperties as property>
+    <#if property?? && property.connectionType == "ONE_TO_MANY">
+    public List<${property.type}> get${property.name?cap_first}() { return ${property.name}; }
+
+    public void set${property.name?cap_first}(List<${property.type}> ${property.name}) { this.${property.name} = ${property.name}; }
+
+    <#elseif property?? && property.connectionType == "MANY_TO_ONE">
     public ${property.type} get${property.name?cap_first}() { return ${property.name}; }
 
     public void set${property.name?cap_first}(${property.type} ${property.name}) { this.${property.name} = ${property.name}; }
 
-    <#elseif property.upper == -1 >
-    public Set<${property.type}> get${property.name?cap_first}() { return ${property.name}; }
-
-    public void set${property.name?cap_first}(Set<${property.type}> ${property.name}) { this.${property.name} = ${property.name}; }
-
-    <#else>
-    <#list 1..property.upper as i>
-    public ${property.type} get${property.name?cap_first}${i}() { return ${property.name}${i}; }
-
-    public void set${property.name?cap_first}${i}(${property.type} ${property.name}${i}) { this.${property.name}${i} = ${property.name}${i}; }
-    </#list>
     </#if>
     </#list>
 

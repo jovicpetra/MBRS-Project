@@ -4,8 +4,10 @@ package myplugin.generator.fmmodel;
 public class ReferencedProperty extends FMProperty {
     private FetchType fetch;
     private CascadeType cascade; // OneToMany
-    private String columnName; // ManyToOne
+    private String mappedBy; // OneToMany
     private String joinTable; // ManyToMany
+    private String joinColumn; //ManyToOne
+    private ConnectionType connectionType;
 
     public ReferencedProperty() {
 		super();
@@ -15,11 +17,13 @@ public class ReferencedProperty extends FMProperty {
 		super(name, type, visibility, lower, upper);
 	}
 	
-	public ReferencedProperty(FetchType fetch, CascadeType cascade, String columnName, String joinTable) {
+	public ReferencedProperty(FetchType fetch, CascadeType cascade, String mappedBy, String joinTable, String joinColumn, ConnectionType connectionType) {
 		this.fetch = fetch;
 		this.cascade = cascade;
-		this.columnName = columnName;
+		this.mappedBy = mappedBy;
 		this.joinTable = joinTable;
+        this.joinColumn = joinColumn;
+        this.connectionType = connectionType;
 	}
 
     public FetchType getFetch() {
@@ -38,12 +42,12 @@ public class ReferencedProperty extends FMProperty {
         this.cascade = cascade;
     }
 
-    public String getColumnName() {
-        return columnName;
+    public String getMappedBy() {
+        return mappedBy;
     }
 
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public void setMappedBy(String mappedBy) {
+        this.mappedBy = mappedBy;
     }
 
     public String getJoinTable() {
@@ -52,5 +56,21 @@ public class ReferencedProperty extends FMProperty {
 
     public void setJoinTable(String joinTable) {
         this.joinTable = joinTable;
+    }
+
+    public ConnectionType getConnectionType() {
+        return connectionType;
+    }
+
+    public void setConnectionType(ConnectionType connectionType) {
+        this.connectionType = connectionType;
+    }
+
+    public String getJoinColumn() {
+        return joinColumn;
+    }
+
+    public void setJoinColumn(String joinColumn) {
+        this.joinColumn = joinColumn;
     }
 }
