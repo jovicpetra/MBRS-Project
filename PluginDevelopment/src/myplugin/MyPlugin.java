@@ -35,10 +35,15 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		
 		//for test purpose only:
 		String outputPath = getOutputPath();
-		GeneratorOptions ejbOptions = new GeneratorOptions(outputPath, "ejbclass", "templates", "{0}.java", true, "ejb");
+		GeneratorOptions ejbOptions = new GeneratorOptions(outputPath, "ejbclass", "templates", "{0}.java", true, "model");
+		ejbOptions.setTemplateDir(pluginDir + File.separator + ejbOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions);
 				
-		ejbOptions.setTemplateDir(pluginDir + File.separator + ejbOptions.getTemplateDir()); //apsolutna putanja
+
+		GeneratorOptions enumOptions = new GeneratorOptions(outputPath, "enum", "templates", "{0}.java", true, "enum");
+		enumOptions.setTemplateDir(pluginDir + File.separator + enumOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EnumGenerator", enumOptions);
+
 	}
 
 	private NMAction[] getSubmenuActions()

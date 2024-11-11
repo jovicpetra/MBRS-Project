@@ -19,6 +19,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.EJBGenerator;
+import myplugin.generator.EnumGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
@@ -46,6 +47,11 @@ class GenerateAction extends MDAction{
 			GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");			
 			EJBGenerator generator = new EJBGenerator(go);
 			generator.generate();
+
+			GeneratorOptions go2 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EnumGenerator");
+			EnumGenerator enumGenerator = new EnumGenerator(go2);
+			enumGenerator.generate();
+
 			/**  @ToDo: Also call other generators */ 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
 					                         ", package: " + go.getFilePackage());
