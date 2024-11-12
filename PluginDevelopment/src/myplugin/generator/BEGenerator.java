@@ -1,7 +1,6 @@
 package myplugin.generator;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +21,9 @@ import myplugin.generator.options.GeneratorOptions;
  *        complete ejb classes
  */
 
-public class EJBGenerator extends BasicGenerator {
+public class BEGenerator extends BasicGenerator {
 
-	public EJBGenerator(GeneratorOptions generatorOptions) {
+	public BEGenerator(GeneratorOptions generatorOptions) {
 		super(generatorOptions);
 	}
 
@@ -60,5 +59,47 @@ public class EJBGenerator extends BasicGenerator {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public Writer getWriter(String fileNamePart, String packageName) throws IOException {
+		if (packageName != filePackage) {
+			packageName.replace(".", File.separator);
+			filePackage = packageName;
+		}
+
+		String generatedFileName = "";
+
+		if(templateName.startsWith("repository")) {
+			generatedFileName = fileNamePart + "Repository";
+		}
+		else if(templateName.startsWith("service")) {
+			generatedFileName = fileNamePart + "Service";
+		}
+		else if(templateName.startsWith("controller")) {
+			generatedFileName = fileNamePart + "Controller";
+		}
+		else if(templateName.startsWith("model")) {
+			generatedFileName = fileNamePart;
+		}
+
+		String fullPath = outputPath
+				+ File.separator
+				+ (filePackage.isEmpty() ? "" : packageToPath(filePackage)
+				+ File.separator)
+				+ outputFileName.replace("{0}", generatedFileName);
+
+		File of = new File(fullPath);
+		if (!of.getParentFile().exists())
+			if (!of.getParentFile().mkdirs()) {
+				throw new IOException("An error occurred during output folder creation "
+						+ outputPath);
+			}
+
+		if (!isOverwrite() && of.exists())
+			return null;
+
+		return new OutputStreamWriter(new FileOutputStream(of));
+
 	}
 }

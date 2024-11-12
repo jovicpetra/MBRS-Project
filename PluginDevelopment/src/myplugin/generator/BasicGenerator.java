@@ -19,15 +19,15 @@ import myplugin.generator.options.GeneratorOptions;
 
 public abstract class BasicGenerator {
 
-	private GeneratorOptions generatorOptions; 
-	private String outputPath;	
-	private String templateName;
-	private String templateDir;
-	private String outputFileName;
-	private boolean overwrite = false;
-	private String filePackage;
-	private Configuration cfg;
-	private Template template;	
+	protected GeneratorOptions generatorOptions;
+	protected String outputPath;
+	protected String templateName;
+	protected String templateDir;
+	protected String outputFileName;
+	protected boolean overwrite = false;
+	protected String filePackage;
+	protected Configuration cfg;
+	protected Template template;
 	
 	public BasicGenerator(GeneratorOptions generatorOptions) {
 		this.generatorOptions = generatorOptions;

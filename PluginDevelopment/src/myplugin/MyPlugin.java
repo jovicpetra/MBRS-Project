@@ -35,14 +35,22 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		
 		//for test purpose only:
 		String outputPath = getOutputPath();
-		GeneratorOptions ejbOptions = new GeneratorOptions(outputPath, "ejbclass", "templates", "{0}.java", true, "model");
-		ejbOptions.setTemplateDir(pluginDir + File.separator + ejbOptions.getTemplateDir()); //apsolutna putanja
-		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions);
-				
 
-		GeneratorOptions enumOptions = new GeneratorOptions(outputPath, "enum", "templates", "{0}.java", true, "enum");
+		// Model
+		GeneratorOptions modelOptions = new GeneratorOptions(outputPath, "model", "templates", "{0}.java", true, "model");
+		modelOptions.setTemplateDir(pluginDir + File.separator + modelOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelGenerator", modelOptions);
+				
+		// Enums
+		GeneratorOptions enumOptions = new GeneratorOptions(outputPath, "enum", "templates", "{0}.java", true, "enums");
 		enumOptions.setTemplateDir(pluginDir + File.separator + enumOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EnumGenerator", enumOptions);
+
+		// Spring Repositories
+		GeneratorOptions repositoryOptions = new GeneratorOptions(outputPath, "repository", "templates", "{0}.java", true, "repositories");
+		repositoryOptions.setTemplateDir(pluginDir + File.separator + repositoryOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("RepositoryGenerator", repositoryOptions);
+
 
 	}
 
