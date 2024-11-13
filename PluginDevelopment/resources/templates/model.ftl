@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "${class.name?lower_case}")
+@Table(name = "${entity.tableName}")
 ${class.visibility} class ${class.name} {
 
     <#list persistentProperties as property>

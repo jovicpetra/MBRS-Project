@@ -49,6 +49,7 @@ public class BEGenerator extends BasicGenerator {
 					context.put("importedPackages", cl.getImportedPackages());
 					context.put("persistentProperties", cl.getPersistentProperties());
 					context.put("referencedProperties", cl.getReferencedProperties());
+					context.put("entity", cl.getEntity());
 					// Ensure the template is available
 					getTemplate().process(context, out);
 					out.flush();
