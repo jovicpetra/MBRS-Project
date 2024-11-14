@@ -50,7 +50,10 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		repositoryOptions.setTemplateDir(pluginDir + File.separator + repositoryOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("RepositoryGenerator", repositoryOptions);
 
-
+		// Application file
+		GeneratorOptions ApplicationFileOptions = new GeneratorOptions(outputPath, "application", "templates", "{0}.java", true, "app");
+		ApplicationFileOptions.setTemplateDir(pluginDir + File.separator + ApplicationFileOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ApplicationFileGenerator", ApplicationFileOptions);
 	}
 
 	private NMAction[] getSubmenuActions()

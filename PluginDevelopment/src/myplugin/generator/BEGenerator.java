@@ -83,6 +83,9 @@ public class BEGenerator extends BasicGenerator {
 		else if(templateName.startsWith("model")) {
 			generatedFileName = fileNamePart;
 		}
+		else if(templateName.startsWith("application")) {
+			generatedFileName = fileNamePart;
+		}
 
 		String fullPath = outputPath
 				+ File.separator
@@ -102,5 +105,29 @@ public class BEGenerator extends BasicGenerator {
 
 		return new OutputStreamWriter(new FileOutputStream(of));
 
+	}
+
+	public void generateApplicationFile() {
+		try {
+			super.generate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		Writer out;
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			out = getWriter("BeautySalonApplication", getFilePackage());
+			if (out != null) {
+				context.clear();
+				context.put("package", "nesto");
+				getTemplate().process(context, out);
+				out.flush();
+			}
+		} catch (TemplateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 	}
 }
