@@ -40,7 +40,7 @@ class GenerateAction extends MDAction{
 		
 		if (root == null) return;
 	
-		ModelAnalyzer analyzer = new ModelAnalyzer(root, "demo");
+		ModelAnalyzer analyzer = new ModelAnalyzer(root, "src/main/java/BeautySalon");
 		
 		try {
 			analyzer.prepareModel();	
