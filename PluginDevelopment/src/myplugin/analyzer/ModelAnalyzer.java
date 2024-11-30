@@ -235,7 +235,7 @@ public class ModelAnalyzer {
 	private FetchType extractFetchType(Property p, Stereotype stereotype) {
 		List<Property> tags = stereotype.getOwnedAttribute();
 		for (Property tagDef : tags) {
-			if (tagDef.getName().equals("fetch")) {
+			if (tagDef.getName().equals("base_Property")) {
 				List value = StereotypesHelper.getStereotypePropertyValue(p, stereotype, "fetch");
 				if (value.size() > 0) {
 					EnumerationLiteralImpl fetchEnum = (EnumerationLiteralImpl) value.get(0);

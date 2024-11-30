@@ -1,4 +1,4 @@
-package ${class.typePackage}.repository;
+package ${package}.repository;
 
 import ${class.typePackage}.model.${class.name?cap_first};
 import org.springframework.data.jpa.repository.JpaRepository;

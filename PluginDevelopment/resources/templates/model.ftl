@@ -1,4 +1,4 @@
-package ${class.typePackage}.model;
+package ${package}.model;
 
 import java.util.Date;
 import javax.persistence.*;

@@ -1,4 +1,4 @@
-package ${enum.typePackage}.enums;
+package ${package}.enums;
 
 public enum ${enum.name} {
     <#list enum.values as value>

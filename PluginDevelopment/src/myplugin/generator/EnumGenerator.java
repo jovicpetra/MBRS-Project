@@ -35,6 +35,7 @@ public class EnumGenerator extends BasicGenerator {
                 if (out != null) {
                     context.clear();
                     context.put("enum", e1);
+                    context.put("package", "BeautySalon");
                     getTemplate().process(context, out);
                     out.flush();
                 }

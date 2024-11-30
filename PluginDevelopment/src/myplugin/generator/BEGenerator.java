@@ -46,7 +46,7 @@ public class BEGenerator extends BasicGenerator {
 					context.clear();
 					context.put("class", cl);
 					context.put("properties", cl.getProperties());
-					context.put("importedPackages", cl.getImportedPackages());
+					context.put("package", "BeautySalon");
 					context.put("persistentProperties", cl.getPersistentProperties());
 					context.put("referencedProperties", cl.getReferencedProperties());
 					context.put("entity", cl.getEntity());
@@ -119,7 +119,7 @@ public class BEGenerator extends BasicGenerator {
 			out = getWriter("BeautySalonApplication", getFilePackage());
 			if (out != null) {
 				context.clear();
-				context.put("package", "nesto");
+				context.put("package", "BeautySalon");
 				getTemplate().process(context, out);
 				out.flush();
 			}
