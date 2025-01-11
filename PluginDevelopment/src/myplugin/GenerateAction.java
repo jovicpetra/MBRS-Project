@@ -60,6 +60,10 @@ class GenerateAction extends MDAction{
 			BEGenerator springApplicationFileGenerator = new BEGenerator(go4);
 			springApplicationFileGenerator.generateApplicationFile();
 
+			GeneratorOptions go5 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ControllerGenerator");
+			BEGenerator controllerGenerator = new BEGenerator(go5);
+			controllerGenerator.generate();
+
 			/**  @ToDo: Also call other generators */ 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
 					                         ", package: " + go.getFilePackage());
