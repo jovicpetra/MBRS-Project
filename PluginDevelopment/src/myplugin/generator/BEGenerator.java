@@ -50,6 +50,7 @@ public class BEGenerator extends BasicGenerator {
 					context.put("persistentProperties", cl.getPersistentProperties());
 					context.put("referencedProperties", cl.getReferencedProperties());
 					context.put("entity", cl.getEntity());
+					context.put("app_name", "BeautySalon");
 					// Ensure the template is available
 					getTemplate().process(context, out);
 					out.flush();
@@ -86,6 +87,9 @@ public class BEGenerator extends BasicGenerator {
 		else if(templateName.startsWith("application")) {
 			generatedFileName = fileNamePart;
 		}
+		else if(templateName.startsWith("customservice")) {
+			generatedFileName = "CustomGenericService";
+		}
 
 		String fullPath = outputPath
 				+ File.separator
@@ -119,7 +123,7 @@ public class BEGenerator extends BasicGenerator {
 			out = getWriter("BeautySalonApplication", getFilePackage());
 			if (out != null) {
 				context.clear();
-				context.put("package", "nesto");
+				context.put("package", "BeautySalon");
 				getTemplate().process(context, out);
 				out.flush();
 			}

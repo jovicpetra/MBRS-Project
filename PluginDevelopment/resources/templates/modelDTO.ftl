@@ -1,6 +1,6 @@
-package ${class.typePackage}.models.dto;
+package ${app_name}.models.dto;
 
-import ${class.typePackage}.enums; //this is the problem that I try to import
+import ${app_name}.enums; //this is the problem that I try to import
 import java.util.Date;
 
 public class ${class.name}DTO {

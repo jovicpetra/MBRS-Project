@@ -1,8 +1,8 @@
-package ${class.typePackage}.controllers;
+package ${app_name}.controllers;
 
-import ${class.typePackage}.models.*;
-import ${class.typePackage}.models.dto.*;
-import ${class.typePackage}.services.*;
+import ${app_name}.models.*;
+import ${app_name}.models.dto.*;
+import ${app_name}.services.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,18 +14,18 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
-@RequestMapping(value = "/api/${class.name}")
+@RequestMapping(value = "/api/${class.name?lower_case}")
 public class ${class.name}Controller {
 
     @Autowired
-    private ${class.name}Service ${class.name}Service;
+    private ${class.name}Service ${class.name?lower_case}Service;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<${class.name}DTO>> getAll() {
-        List<${class.name}> entityList = ${class.name}Service.findAll();
+        List<${class.name}> entityList = ${class.name?lower_case}Service.findAll();
         if (entityList == null || entityList.isEmpty()) {
             return new ResponseEntity<List<${class.name}DTO>>(HttpStatus.BAD_REQUEST);
         }
@@ -41,7 +41,7 @@ public class ${class.name}Controller {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<${class.name}DTO> getById(@PathVariable Long id) {
-        ${class.name} entity = ${class.name}Service.findOne(id);
+        ${class.name} entity = ${class.name?lower_case}Service.findById(id);
         if (entity == null) {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.NOT_FOUND);
         }
@@ -66,7 +66,7 @@ public class ${class.name}Controller {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.BAD_REQUEST);
         }
 
-        ${class.name} updatedEntity = ${class.name}Service.update(modelMapper.map(dto, ${class.name}.class));
+        ${class.name} updatedEntity = ${class.name?lower_case}Service.update(modelMapper.map(dto, ${class.name}.class));
         if (updatedEntity == null) {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.BAD_REQUEST);
         }
@@ -76,7 +76,7 @@ public class ${class.name}Controller {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
-        ${class.name}Service.remove(id);
+        ${class.name?lower_case}Service.delete(id);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 }

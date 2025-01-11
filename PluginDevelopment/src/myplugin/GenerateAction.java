@@ -64,6 +64,14 @@ class GenerateAction extends MDAction{
 			BEGenerator controllerGenerator = new BEGenerator(go5);
 			controllerGenerator.generate();
 
+			GeneratorOptions go6 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ServiceGenerator");
+			BEGenerator serviceGenerator = new BEGenerator(go6);
+			serviceGenerator.generate();
+
+			GeneratorOptions go7 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("CustomServiceGenerator");
+			BEGenerator customServiceGenerator = new BEGenerator(go7);
+			customServiceGenerator.generate();
+
 			/**  @ToDo: Also call other generators */ 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
 					                         ", package: " + go.getFilePackage());
