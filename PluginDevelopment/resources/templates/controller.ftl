@@ -30,7 +30,7 @@ public class ${class.name}Controller {
             return new ResponseEntity<List<${class.name}DTO>>(HttpStatus.BAD_REQUEST);
         }
 
-        List<${class.name}DTO> dtoList = new ArrayList<>();
+        List<${class.name}DTO> dtoList = new ArrayList<${class.name}DTO>();
         for (${class.name} entity : entityList) {
             ${class.name}DTO dto = modelMapper.map(entity, ${class.name}DTO.class);
             dtoList.add(dto);
