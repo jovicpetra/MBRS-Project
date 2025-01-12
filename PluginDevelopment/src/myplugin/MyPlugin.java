@@ -40,6 +40,11 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		modelOptions.setTemplateDir(pluginDir + File.separator + modelOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelGenerator", modelOptions);
 
+		// ModelDTO
+		GeneratorOptions modelDTOOptions = new GeneratorOptions(outputPath, "modelDTO", "templates", "{0}.java", true, "src/main/java/BeautySalon/modelsDTO");
+		modelOptions.setTemplateDir(pluginDir + File.separator + modelDTOOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelDTOGenerator", modelDTOOptions);
+
 		// Enums
 		GeneratorOptions enumOptions = new GeneratorOptions(outputPath, "enum", "templates", "{0}.java", true, "src/main/java/BeautySalon/enums");
 		enumOptions.setTemplateDir(pluginDir + File.separator + enumOptions.getTemplateDir()); //apsolutna putanja
