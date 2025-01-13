@@ -21,8 +21,8 @@ public class FMClass extends FMType {
 
 	private List<PersistentProperty> persistentProperties = new ArrayList<PersistentProperty>();
 	private List<ReferencedProperty> referencedProperties = new ArrayList<ReferencedProperty>();
-	
-	/** @ToDo: add list of methods */
+
+	private List<FMMethod> methods = new ArrayList<FMMethod>();
 	
 	
 	public FMClass(String name, String classPackage, String visibility) {
@@ -102,6 +102,11 @@ public class FMClass extends FMType {
     public void setReferencedProperties(List<ReferencedProperty> referencedProperties) {
         this.referencedProperties = referencedProperties;
     }
+
+
+	public List<FMMethod> getMethods() {
+		return methods;
+	}
 
 	public void addReferencedProperty(ReferencedProperty property){
 		referencedProperties.add(property);

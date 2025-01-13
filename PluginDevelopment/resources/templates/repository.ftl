@@ -1,6 +1,6 @@
-package ${package}.repository;
+package ${app_name}.repositories;
 
-import ${class.typePackage}.model.${class.name?cap_first};
+import ${app_name}.models.${class.name?cap_first};
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
