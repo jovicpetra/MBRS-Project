@@ -4,7 +4,7 @@ import java.util.Date;
 public class ${class.name}DTO {
    <#list persistentProperties as property>
       </#list>
-      public ${class.name}() { }
+      public ${class.name}DTO() { }
 
       <#list persistentProperties as property>
       public <#if (property.type)=="date">Date<#else>${property.type}</#if> get${property.name?cap_first}() { return ${property.name}; }

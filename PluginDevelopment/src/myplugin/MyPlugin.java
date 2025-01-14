@@ -41,7 +41,7 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelGenerator", modelOptions);
 
 		// ModelDTO
-		GeneratorOptions modelDTOOptions = new GeneratorOptions(outputPath, "modelDTO", "templates", "{0}.java", true, "src/main/java/BeautySalon/modelDTO");
+		GeneratorOptions modelDTOOptions = new GeneratorOptions(outputPath, "modelDTO", "templates", "{0}DTO.java", true, "src/main/java/BeautySalon/models/dto");
 		modelDTOOptions.setTemplateDir(pluginDir + File.separator + modelDTOOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelDTOGenerator", modelDTOOptions);
 
@@ -60,10 +60,12 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		ApplicationFileOptions.setTemplateDir(pluginDir + File.separator + ApplicationFileOptions.getTemplateDir());
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ApplicationFileGenerator", ApplicationFileOptions);
 
+		//Controller
 		GeneratorOptions controllerOptions = new GeneratorOptions(outputPath, "controller", "templates", "{0}.java", true, "src/main/java/BeautySalon/controllers");
 		controllerOptions.setTemplateDir(pluginDir + File.separator + controllerOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ControllerGenerator", controllerOptions);
 
+		//Service
 		GeneratorOptions serviceOptions = new GeneratorOptions(outputPath, "service", "templates", "{0}.java", true, "src/main/java/BeautySalon/services");
 		serviceOptions.setTemplateDir(pluginDir + File.separator + serviceOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ServiceGenerator", serviceOptions);
