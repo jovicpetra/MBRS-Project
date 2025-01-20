@@ -1,9 +1,10 @@
 package ${app_name}.models;
 
 import java.util.Date;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
+import ${app_name}.enums.*;
 
 @Entity
 @Table(name = "${entity.tableName}")

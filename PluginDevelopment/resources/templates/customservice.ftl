@@ -9,8 +9,8 @@ public class CustomGenericService<T,ID> {
 @Autowired
 protected JpaRepository<T, ID> repository;
 
-public void save(T item) {
-repository.save(item);
+public T save(T item) {
+return repository.save(item);
 }
 
 public List<T> findAll() {
@@ -21,8 +21,8 @@ public T findById(ID id) {
 return repository.findById(id).get();
 }
 
-public void update(T item) {
-repository.save(item);
+public T update(T item) {
+return repository.save(item);
 }
 
 public void delete(ID id) {

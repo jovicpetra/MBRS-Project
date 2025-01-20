@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class ${class.name}Controller {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<${class.name}DTO> getById(@PathVariable Long id) {
+    public ResponseEntity<${class.name}DTO> getById(@PathVariable Integer id) {
         ${class.name} entity = ${class.name?lower_case}Service.findById(id);
         if (entity == null) {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.NOT_FOUND);
@@ -61,7 +61,7 @@ public class ${class.name}Controller {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
     public ResponseEntity<${class.name}DTO> updateById(@RequestBody @Valid ${class.name}DTO dto,
-                                                                 @PathVariable Long id) {
+                                                                 @PathVariable Integer id) {
         if (id != dto.getId()) {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.BAD_REQUEST);
         }
