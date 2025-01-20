@@ -1,6 +1,11 @@
 package myplugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
@@ -17,8 +22,7 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 	String pluginDir = null; 
 	
 	public void init() {
-		JOptionPane.showMessageDialog( null, "My Plugin init");
-		
+
 		pluginDir = getDescriptor().getPluginDirectory().getPath();
 		
 		// Creating submenu in the MagicDraw main menu 	
@@ -29,10 +33,47 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		 * ProjectOptions.xml and take ejb generator options */
 		
 		//for test purpose only:
-		GeneratorOptions ejbOptions = new GeneratorOptions("c:/temp", "ejbclass", "templates", "{0}.java", true, "ejb"); 				
-		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions);
-				
-		ejbOptions.setTemplateDir(pluginDir + File.separator + ejbOptions.getTemplateDir()); //apsolutna putanja
+		String outputPath = getOutputPath();
+
+		// Model
+		GeneratorOptions modelOptions = new GeneratorOptions(outputPath, "model", "templates", "{0}.java", true, "src/main/java/BeautySalon/models");
+		modelOptions.setTemplateDir(pluginDir + File.separator + modelOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelGenerator", modelOptions);
+
+		// ModelDTO
+		GeneratorOptions modelDTOOptions = new GeneratorOptions(outputPath, "modelDTO", "templates", "{0}DTO.java", true, "src/main/java/BeautySalon/models/dto");
+		modelDTOOptions.setTemplateDir(pluginDir + File.separator + modelDTOOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelDTOGenerator", modelDTOOptions);
+
+		// Enums
+		GeneratorOptions enumOptions = new GeneratorOptions(outputPath, "enum", "templates", "{0}.java", true, "src/main/java/BeautySalon/enums");
+		enumOptions.setTemplateDir(pluginDir + File.separator + enumOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EnumGenerator", enumOptions);
+
+		// Spring Repositories
+		GeneratorOptions repositoryOptions = new GeneratorOptions(outputPath, "repository", "templates", "{0}.java", true, "src/main/java/BeautySalon/repositories");
+		repositoryOptions.setTemplateDir(pluginDir + File.separator + repositoryOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("RepositoryGenerator", repositoryOptions);
+
+		// Application file
+		GeneratorOptions ApplicationFileOptions = new GeneratorOptions(outputPath, "application", "templates", "{0}.java", true, "src/main/java/BeautySalon");
+		ApplicationFileOptions.setTemplateDir(pluginDir + File.separator + ApplicationFileOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ApplicationFileGenerator", ApplicationFileOptions);
+
+		//Controller
+		GeneratorOptions controllerOptions = new GeneratorOptions(outputPath, "controller", "templates", "{0}.java", true, "src/main/java/BeautySalon/controllers");
+		controllerOptions.setTemplateDir(pluginDir + File.separator + controllerOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ControllerGenerator", controllerOptions);
+
+		//Service
+		GeneratorOptions serviceOptions = new GeneratorOptions(outputPath, "service", "templates", "{0}.java", true, "src/main/java/BeautySalon/services");
+		serviceOptions.setTemplateDir(pluginDir + File.separator + serviceOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ServiceGenerator", serviceOptions);
+
+		GeneratorOptions customServiceOptions = new GeneratorOptions(outputPath, "customservice", "templates", "{0}.java", true, "src/main/java/BeautySalon/services");
+		customServiceOptions.setTemplateDir(pluginDir + File.separator + customServiceOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("CustomServiceGenerator", customServiceOptions);
+
 	}
 
 	private NMAction[] getSubmenuActions()
@@ -48,6 +89,30 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 	
 	public boolean isSupported() {				
 		return true;
+	}
+
+	private String getOutputPath() {
+		String returnVal = "";
+		Properties prop = new Properties();
+		InputStream input = null;
+		try {
+			input = Files.newInputStream(Paths.get("resources/ProjectOptions.xml"));
+			// load a properties file
+			prop.load(input);
+			// get the property value
+			returnVal = prop.getProperty("OUTPUT_PATH");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		return returnVal;
 	}
 }
 

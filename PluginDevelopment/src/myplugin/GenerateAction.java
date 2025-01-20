@@ -18,7 +18,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
-import myplugin.generator.EJBGenerator;
+import myplugin.generator.BEGenerator;
+import myplugin.generator.EnumGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
@@ -39,13 +40,42 @@ class GenerateAction extends MDAction{
 		
 		if (root == null) return;
 	
-		ModelAnalyzer analyzer = new ModelAnalyzer(root, "ejb");	
+		ModelAnalyzer analyzer = new ModelAnalyzer(root, "src/main/java/BeautySalon");
 		
 		try {
 			analyzer.prepareModel();	
-			GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");			
-			EJBGenerator generator = new EJBGenerator(go);
+			GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelGenerator");
+			BEGenerator generator = new BEGenerator(go);
 			generator.generate();
+
+			GeneratorOptions go2 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EnumGenerator");
+			EnumGenerator enumGenerator = new EnumGenerator(go2);
+			enumGenerator.generate();
+
+			GeneratorOptions go3 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("RepositoryGenerator");
+			BEGenerator repoGenerator = new BEGenerator(go3);
+			repoGenerator.generate();
+
+			GeneratorOptions go4 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ApplicationFileGenerator");
+			BEGenerator springApplicationFileGenerator = new BEGenerator(go4);
+			springApplicationFileGenerator.generateApplicationFile();
+
+			GeneratorOptions go5 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ControllerGenerator");
+			BEGenerator controllerGenerator = new BEGenerator(go5);
+			controllerGenerator.generate();
+
+			GeneratorOptions go6 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ServiceGenerator");
+			BEGenerator serviceGenerator = new BEGenerator(go6);
+			serviceGenerator.generate();
+
+			GeneratorOptions go7 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("CustomServiceGenerator");
+			BEGenerator customServiceGenerator = new BEGenerator(go7);
+			customServiceGenerator.generate();
+
+			GeneratorOptions go8 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelDTOGenerator");
+			BEGenerator modelDTOGenerator = new BEGenerator(go8);
+			modelDTOGenerator.generate();
+
 			/**  @ToDo: Also call other generators */ 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
 					                         ", package: " + go.getFilePackage());

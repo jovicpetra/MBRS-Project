@@ -1,6 +1,10 @@
 package myplugin.generator.fmmodel;
 
-public class FMType extends FMElement {	
+public class FMType extends FMElement {
+
+	public FMType() {
+
+	}
 
 	public String getTypePackage() {
 		return typePackage;

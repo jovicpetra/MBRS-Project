@@ -1,1 +1,21 @@
 /.metadata/
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Java class files
+*.class
+
+# Log files
+*.log
+*.jar
+
+# Build output directory
+/target/
+/out/
+
+# Maven / Gradle
+/.mvn/
+target/
+build/
+OurBeautySalonApp/src/main/java/BeautySalon

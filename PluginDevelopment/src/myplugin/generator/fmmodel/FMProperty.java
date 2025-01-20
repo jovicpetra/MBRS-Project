@@ -10,6 +10,13 @@ public class FMProperty extends FMElement  {
 	private Integer lower;
 	//Multiplicity (upper value) 
 	private Integer upper;
+
+	public void setPersistentProperty(PersistentProperty persistentProperty) {
+		this.persistentProperty = persistentProperty;
+	}
+
+	private ReferencedProperty referencedProperty;
+	private PersistentProperty persistentProperty;
 	
 	/** @ToDo: Add length, precision, unique... whatever is needed for ejb class generation
 	 * Also, provide these meta-attributes or tags in the modeling languange metaclass or 
@@ -24,7 +31,11 @@ public class FMProperty extends FMElement  {
 		this.lower = lower;
 		this.upper = upper;		
 	}
-	
+
+	public FMProperty() {
+		super();
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -52,5 +63,17 @@ public class FMProperty extends FMElement  {
 
 	public void setUpper(Integer upper) {
 		this.upper = upper;
+	}
+
+	public ReferencedProperty getReferencedProperty() {
+		return referencedProperty;
+	}
+
+	public void setReferencedProperty(ReferencedProperty referencedProperty) {
+		this.referencedProperty = referencedProperty;
+	}
+
+	public PersistentProperty getPersistentProperty() {
+		return persistentProperty;
 	}
 }
