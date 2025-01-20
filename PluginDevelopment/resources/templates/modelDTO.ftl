@@ -1,9 +1,21 @@
 package ${app_name}.models.dto;
-import java.util.Date;
+import java.util.*;
+import ${app_name}.models.*;
+import ${app_name}.enums.*;
 
 public class ${class.name}DTO {
    <#list persistentProperties as property>
-      </#list>
+    <#if property.isId?? && property.isId>
+    </#if>
+    ${property.visibility} <#if (property.type)=="date">Date<#else>${property.type}</#if> ${property.name};
+    </#list>
+    <#list referencedProperties as property>
+    <#if property?? && property.connectionType == "ONE_TO_MANY">
+    private List<${property.type}> ${property.name} = new ArrayList<>();
+    <#elseif property?? && property.connectionType == "MANY_TO_ONE">
+    private ${property.type} ${property.name};
+    </#if>
+    </#list>
       public ${class.name}DTO() { }
 
       <#list persistentProperties as property>

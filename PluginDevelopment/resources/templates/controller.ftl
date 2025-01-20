@@ -75,7 +75,7 @@ public class ${class.name}Controller {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable Integer id) {
         ${class.name?lower_case}Service.delete(id);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
