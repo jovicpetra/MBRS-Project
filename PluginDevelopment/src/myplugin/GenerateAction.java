@@ -76,6 +76,10 @@ class GenerateAction extends MDAction{
 			BEGenerator modelDTOGenerator = new BEGenerator(go8);
 			modelDTOGenerator.generate();
 
+			GeneratorOptions go9 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelMapperGenerator");
+			BEGenerator modelMapperGenerator = new BEGenerator(go9);
+			modelMapperGenerator.generate();
+
 			/**  @ToDo: Also call other generators */ 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
 					                         ", package: " + go.getFilePackage());

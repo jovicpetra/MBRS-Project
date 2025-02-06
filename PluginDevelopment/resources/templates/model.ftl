@@ -23,7 +23,7 @@ ${class.visibility} class ${class.name} {
     @OneToMany(mappedBy = "${property.mappedBy}", cascade = CascadeType.${property.cascade}, fetch = FetchType.${property.fetch})
     private List<${property.type}> ${property.name} = new ArrayList<>();
     <#elseif property?? && property.connectionType == "MANY_TO_ONE">
-    @ManyToOne(fetch = FetchType.${property.fetch})
+    @ManyToOne(fetch = FetchType.${property.fetch}<#if property.joinColumn == "client_id" && class.name == "Appointment">, cascade = CascadeType.ALL</#if>)
     @JoinColumn(name = "${property.joinColumn}")
     private ${property.type} ${property.name};
     </#if>

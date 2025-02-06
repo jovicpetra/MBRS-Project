@@ -19,7 +19,6 @@ public class ${class.name}Controller {
 
     @Autowired
     private ${class.name}Service ${class.name?lower_case}Service;
-
     @Autowired
     private ModelMapper modelMapper;
 

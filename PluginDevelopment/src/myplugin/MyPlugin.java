@@ -74,6 +74,10 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		customServiceOptions.setTemplateDir(pluginDir + File.separator + customServiceOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("CustomServiceGenerator", customServiceOptions);
 
+		// ModelMapper
+		GeneratorOptions modelMapperOptions = new GeneratorOptions(outputPath, "model_mapper", "templates", "ModelMapperConfig.java", true, "src/main/java/BeautySalon/config");
+		modelMapperOptions.setTemplateDir(pluginDir + File.separator + modelMapperOptions.getTemplateDir()); //apsolutna putanja
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelMapperGenerator", modelMapperOptions);
 	}
 
 	private NMAction[] getSubmenuActions()
