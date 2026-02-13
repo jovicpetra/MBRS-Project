@@ -19,6 +19,14 @@ public class FMType extends FMElement {
 		this.typePackage = typePackage;
 	}
 	
+	/**
+	 * Check if this type is an enumeration
+	 * @return true if this type is an enumeration
+	 */
+	public boolean isEnumeration() {
+		return this instanceof FMEnumeration;
+	}
+	
 	//Qualified package name, used for import declaration 
 	//Empty string for standard library types
 	private String typePackage;

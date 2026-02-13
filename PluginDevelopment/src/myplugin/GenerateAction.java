@@ -20,6 +20,11 @@ import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.BEGenerator;
 import myplugin.generator.EnumGenerator;
+import myplugin.generator.frontend.JspFormGenerator;
+import myplugin.generator.frontend.JspListGenerator;
+import myplugin.generator.frontend.JspHomePageGenerator;
+import myplugin.generator.frontend.CssGenerator;
+import myplugin.generator.frontend.JsGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
@@ -75,6 +80,46 @@ class GenerateAction extends MDAction{
 			GeneratorOptions go8 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelDTOGenerator");
 			BEGenerator modelDTOGenerator = new BEGenerator(go8);
 			modelDTOGenerator.generate();
+
+			GeneratorOptions goModelMapperConfig = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelMapperConfigGenerator");
+			BEGenerator modelMapperConfigGenerator = new BEGenerator(goModelMapperConfig);
+			modelMapperConfigGenerator.generateConfigFile();
+
+			// Frontend generators
+			GeneratorOptions goJspForm = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspFormGenerator");
+			JspFormGenerator jspFormGenerator = new JspFormGenerator(goJspForm);
+			jspFormGenerator.generate();
+
+			GeneratorOptions goJspList = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspListGenerator");
+			JspListGenerator jspListGenerator = new JspListGenerator(goJspList);
+			jspListGenerator.generate();
+
+			GeneratorOptions goJspHome = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspHomeGenerator");
+			JspHomePageGenerator jspHomeGenerator = new JspHomePageGenerator(goJspHome);
+			jspHomeGenerator.generate();
+
+			GeneratorOptions goCss = ProjectOptions.getProjectOptions().getGeneratorOptions().get("CssGenerator");
+			CssGenerator cssGenerator = new CssGenerator(goCss);
+			cssGenerator.generate();
+
+			GeneratorOptions goJs = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JsGenerator");
+			JsGenerator jsGenerator = new JsGenerator(goJs);
+			jsGenerator.generate();
+
+			// Frontend View Controller (for JSP pages)
+			GeneratorOptions goViewController = ProjectOptions.getProjectOptions().getGeneratorOptions().get("FrontendViewControllerGenerator");
+			BEGenerator viewControllerGenerator = new BEGenerator(goViewController);
+			viewControllerGenerator.generateFrontendViewController();
+
+			// WebConfig
+			GeneratorOptions goWebConfig = ProjectOptions.getProjectOptions().getGeneratorOptions().get("WebConfigGenerator");
+			BEGenerator webConfigGenerator = new BEGenerator(goWebConfig);
+			webConfigGenerator.generateWebConfig();
+
+			// Application Properties
+			GeneratorOptions goApplicationProperties = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ApplicationPropertiesGenerator");
+			BEGenerator applicationPropertiesGenerator = new BEGenerator(goApplicationProperties);
+			applicationPropertiesGenerator.generateApplicationProperties();
 
 			/**  @ToDo: Also call other generators */ 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +

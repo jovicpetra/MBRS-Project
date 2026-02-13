@@ -4,8 +4,22 @@ import java.util.Date;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ${app_name}.enums.*;
 
+/**
+ * Entity class ${class.name}
+ * 
+ * JSON Serialization Notes:
+ * - @JsonManagedReference: Applied to MANY_TO_ONE relationships (forward side)
+ *   Tells Jackson this is the "owning" side that includes all details
+ * - @JsonBackReference: Applied to ONE_TO_MANY relationships (reverse side)
+ *   Tells Jackson not to serialize this side, preventing infinite loops
+ * 
+ * This prevents circular reference errors when serializing bidirectional relationships
+ * Example: Appointment -MANY_TO_ONE-> Client, Client <-ONE_TO_MANY- Appointment
+ */
 @Entity
 @Table(name = "${entity.tableName}")
 ${class.visibility} class ${class.name} {
@@ -21,10 +35,12 @@ ${class.visibility} class ${class.name} {
     <#list referencedProperties as property>
     <#if property?? && property.connectionType == "ONE_TO_MANY">
     @OneToMany(mappedBy = "${property.mappedBy}", cascade = CascadeType.${property.cascade}, fetch = FetchType.${property.fetch})
+    @JsonBackReference(value = "${property.name}_ref")
     private List<${property.type}> ${property.name} = new ArrayList<>();
     <#elseif property?? && property.connectionType == "MANY_TO_ONE">
     @ManyToOne(fetch = FetchType.${property.fetch})
     @JoinColumn(name = "${property.joinColumn}")
+    @JsonManagedReference(value = "${property.name}_ref")
     private ${property.type} ${property.name};
     </#if>
     </#list>

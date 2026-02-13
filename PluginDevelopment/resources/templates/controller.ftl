@@ -26,14 +26,13 @@ public class ${class.name}Controller {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<${class.name}DTO>> getAll() {
         List<${class.name}> entityList = ${class.name?lower_case}Service.findAll();
-        if (entityList == null || entityList.isEmpty()) {
-            return new ResponseEntity<List<${class.name}DTO>>(HttpStatus.BAD_REQUEST);
-        }
-
+        
         List<${class.name}DTO> dtoList = new ArrayList<${class.name}DTO>();
-        for (${class.name} entity : entityList) {
-            ${class.name}DTO dto = modelMapper.map(entity, ${class.name}DTO.class);
-            dtoList.add(dto);
+        if (entityList != null && !entityList.isEmpty()) {
+            for (${class.name} entity : entityList) {
+                ${class.name}DTO dto = modelMapper.map(entity, ${class.name}DTO.class);
+                dtoList.add(dto);
+            }
         }
 
         return new ResponseEntity<List<${class.name}DTO>>(dtoList, HttpStatus.OK);

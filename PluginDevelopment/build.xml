@@ -39,8 +39,8 @@
 		<copy todir="${MAGICDRAW_HOME}/plugins/myplugin">
 			<fileset dir="lib" includes="*.jar"/>
 		</copy>
-		<copy todir="${MAGICDRAW_HOME}/plugins/myplugin/templates">
-			<fileset dir="resources/templates" includes="*.ftl"/>
+		<copy todir="${MAGICDRAW_HOME}/plugins/myplugin/resources/templates">
+			<fileset dir="resources/templates" includes="**/*.ftl"/>
 		</copy>
 	</target>
 </project>

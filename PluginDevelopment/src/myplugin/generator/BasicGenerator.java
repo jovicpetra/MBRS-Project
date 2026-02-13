@@ -57,6 +57,9 @@ public abstract class BasicGenerator {
 
 		final String tName = templateName + ".ftl";
 		try {
+			System.out.println("DEBUG: Template directory: " + templateDir);
+			System.out.println("DEBUG: Looking for template: " + tName);
+			System.out.println("DEBUG: Full path: " + new File(templateDir, tName).getAbsolutePath());
 			cfg.setDirectoryForTemplateLoading(new File(templateDir));
 			template = cfg.getTemplate(tName);
 			DefaultObjectWrapperBuilder builder = 
@@ -68,7 +71,7 @@ public abstract class BasicGenerator {
 							"An error occurred during folder creation " + outputPath);
 			}
 		} catch (IOException e) {
-			throw new IOException("Can't find template " + tName + ".", e);
+			throw new IOException("Can't find template " + tName + ". Template directory was: " + templateDir, e);
 		}
 
 	}

@@ -90,6 +90,18 @@ public class BEGenerator extends BasicGenerator {
 		else if(templateName.startsWith("customservice")) {
 			generatedFileName = "CustomGenericService";
 		}
+		else if(templateName.startsWith("modelMapperConfig")) {
+			generatedFileName = fileNamePart;
+		}
+		else if(templateName.startsWith("frontendViewController")) {
+			generatedFileName = fileNamePart;
+		}
+		else if(templateName.startsWith("viewController")) {
+			generatedFileName = fileNamePart;
+		}
+		else if(templateName.startsWith("webconfig")) {
+			generatedFileName = fileNamePart;
+		}
 
 		String fullPath = outputPath
 				+ File.separator
@@ -126,6 +138,163 @@ public class BEGenerator extends BasicGenerator {
 				context.put("package", "BeautySalon");
 				getTemplate().process(context, out);
 				out.flush();
+			}
+		} catch (TemplateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+
+	public void generateConfigFile() {
+		try {
+			super.generate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}
+		Writer out;
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			out = getWriter("ModelMapperConfig", getFilePackage());
+			if (out != null) {
+				context.clear();
+				context.put("package", "BeautySalon");
+				if (getTemplate() != null) {
+					getTemplate().process(context, out);
+					out.flush();
+				} else {
+					throw new IOException("Template not loaded for ModelMapperConfig");
+				}
+			}
+		} catch (TemplateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+
+	public void generateFrontendViewController() {
+		try {
+			super.generate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}
+		Writer out;
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			out = getWriter("FrontendViewController", getFilePackage());
+			if (out != null) {
+				context.clear();
+				context.put("package", "BeautySalon");
+				context.put("app_name", "BeautySalon");
+				context.put("classes", FMModel.getInstance().getClasses());
+				if (getTemplate() != null) {
+					getTemplate().process(context, out);
+					out.flush();
+				} else {
+					throw new IOException("Template not loaded for FrontendViewController");
+				}
+			}
+		} catch (TemplateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+
+	public void generateWebConfig() {
+		try {
+			super.generate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}
+		Writer out;
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			out = getWriter("WebConfig", getFilePackage());
+			if (out != null) {
+				context.clear();
+				context.put("package", "BeautySalon");
+				if (getTemplate() != null) {
+					getTemplate().process(context, out);
+					out.flush();
+				} else {
+					throw new IOException("Template not loaded for WebConfig");
+				}
+			}
+		} catch (TemplateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+
+	public void generateViewController() {
+		try {
+			super.generate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}
+		Writer out;
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			out = getWriter("ViewController", getFilePackage());
+			if (out != null) {
+				context.clear();
+				context.put("package", "BeautySalon");
+				context.put("app_name", "BeautySalon");
+				context.put("classes", FMModel.getInstance().getClasses());
+				if (getTemplate() != null) {
+					getTemplate().process(context, out);
+					out.flush();
+				} else {
+					throw new IOException("Template not loaded for ViewController");
+				}
+			}
+		} catch (TemplateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+
+	public void generateApplicationProperties() {
+		try {
+			super.generate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}
+		Writer out;
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			// Output path should be src/main/resources/application.properties
+			String fullPath = outputPath + File.separator + "application.properties";
+			
+			File of = new File(fullPath);
+			if (!of.getParentFile().exists())
+				if (!of.getParentFile().mkdirs()) {
+					throw new IOException("An error occurred during output folder creation: " + fullPath);
+				}
+
+			out = new OutputStreamWriter(new FileOutputStream(of));
+			if (out != null) {
+				context.clear();
+				if (getTemplate() != null) {
+					getTemplate().process(context, out);
+					out.flush();
+				} else {
+					throw new IOException("Template not loaded for application.properties");
+				}
 			}
 		} catch (TemplateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
