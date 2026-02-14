@@ -19,15 +19,15 @@ import myplugin.generator.options.GeneratorOptions;
 
 public abstract class BasicGenerator {
 
-	private GeneratorOptions generatorOptions; 
-	private String outputPath;	
-	private String templateName;
-	private String templateDir;
-	private String outputFileName;
-	private boolean overwrite = false;
-	private String filePackage;
-	private Configuration cfg;
-	private Template template;	
+	protected GeneratorOptions generatorOptions;
+	protected String outputPath;
+	protected String templateName;
+	protected String templateDir;
+	protected String outputFileName;
+	protected boolean overwrite = false;
+	protected String filePackage;
+	protected Configuration cfg;
+	protected Template template;
 	
 	public BasicGenerator(GeneratorOptions generatorOptions) {
 		this.generatorOptions = generatorOptions;
@@ -57,6 +57,9 @@ public abstract class BasicGenerator {
 
 		final String tName = templateName + ".ftl";
 		try {
+			System.out.println("DEBUG: Template directory: " + templateDir);
+			System.out.println("DEBUG: Looking for template: " + tName);
+			System.out.println("DEBUG: Full path: " + new File(templateDir, tName).getAbsolutePath());
 			cfg.setDirectoryForTemplateLoading(new File(templateDir));
 			template = cfg.getTemplate(tName);
 			DefaultObjectWrapperBuilder builder = 
@@ -68,7 +71,7 @@ public abstract class BasicGenerator {
 							"An error occurred during folder creation " + outputPath);
 			}
 		} catch (IOException e) {
-			throw new IOException("Can't find template " + tName + ".", e);
+			throw new IOException("Can't find template " + tName + ". Template directory was: " + templateDir, e);
 		}
 
 	}

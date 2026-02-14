@@ -15,6 +15,9 @@ public class ProjectOptions {
 	//Hash map for linking generators with its options
 	private Map<String, GeneratorOptions> generatorOptions = new HashMap<String, GeneratorOptions>();
 	
+	//Project name
+	private String projectName = "BeautySalon";
+	
 	private static ProjectOptions projectOptions = null; 
 	
 	public List<TypeMapping> getTypeMappings() {
@@ -42,6 +45,14 @@ public class ProjectOptions {
 			projectOptions = new ProjectOptions();	
 		}	
 		return projectOptions;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 
 }

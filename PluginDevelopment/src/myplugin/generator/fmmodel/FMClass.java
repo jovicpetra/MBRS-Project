@@ -15,15 +15,25 @@ public class FMClass extends FMType {
 	
 	//list of packages (for import declarations) 
 	private List<String> importedPackages = new ArrayList<String>();
-	
-	/** @ToDo: add list of methods */
+
+	//Entity
+	private Entity entity = null;
+
+	private List<PersistentProperty> persistentProperties = new ArrayList<PersistentProperty>();
+	private List<ReferencedProperty> referencedProperties = new ArrayList<ReferencedProperty>();
+
+	private List<FMMethod> methods = new ArrayList<FMMethod>();
 	
 	
 	public FMClass(String name, String classPackage, String visibility) {
 		super(name, classPackage);		
 		this.visibility = visibility;
-	}	
-	
+	}
+
+	public FMClass() {
+		super();
+	}
+
 	public List<FMProperty> getProperties(){
 		return FMProperties;
 	}
@@ -62,8 +72,44 @@ public class FMClass extends FMType {
 
 	public void setVisibility(String visibility) {
 		this.visibility = visibility;
-	}	
+	}
 
-	
-	
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+    public List<PersistentProperty> getPersistentProperties() {
+        return persistentProperties;
+    }
+
+    public void setPersistentProperties(List<PersistentProperty> persistentProperties) {
+        this.persistentProperties = persistentProperties;
+    }
+
+	public void addPersistentProperty(PersistentProperty property){
+		persistentProperties.add(property);
+	}
+
+	public List<ReferencedProperty> getReferencedProperties() {
+        return referencedProperties;
+    }
+
+    public void setReferencedProperties(List<ReferencedProperty> referencedProperties) {
+        this.referencedProperties = referencedProperties;
+    }
+
+
+	public List<FMMethod> getMethods() {
+		return methods;
+	}
+
+	public void addReferencedProperty(ReferencedProperty property){
+		referencedProperties.add(property);
+	}
+
 }

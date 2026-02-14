@@ -2,7 +2,7 @@ package testTemplates;
 
 import java.util.List;
 
-import myplugin.generator.EJBGenerator;
+import myplugin.generator.BEGenerator;
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.fmmodel.FMProperty;
@@ -65,8 +65,8 @@ public class TestPackageGeneration {
 	
 	public void testGenerator() {
 		initModel();		
-		GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");	
-		EJBGenerator g = new EJBGenerator(go);
+		GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");
+		BEGenerator g = new BEGenerator(go);
 		g.generate();
 	}
 	

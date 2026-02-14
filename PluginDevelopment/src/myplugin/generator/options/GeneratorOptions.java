@@ -10,6 +10,7 @@ public class GeneratorOptions  {
 	private String outputFileName;
 	private Boolean overwrite;
 	private String filePackage;
+	private ProjectOptions projectOptions;
 	
 	public GeneratorOptions(String outputPath, String templateName,
 			String templateDir, String outputFileName, Boolean overwrite,
@@ -21,6 +22,7 @@ public class GeneratorOptions  {
 		this.outputFileName = outputFileName;
 		this.overwrite = overwrite;
 		this.filePackage = filePackage;
+		this.projectOptions = ProjectOptions.getProjectOptions();
 	}
 
 	public String getOutputPath() {
@@ -70,6 +72,13 @@ public class GeneratorOptions  {
 	public void setFilePackage(String filePackage) {
 		this.filePackage = filePackage;
 	}
-	
+
+	public ProjectOptions getProjectOptions() {
+		return projectOptions;
+	}
+
+	public void setProjectOptions(ProjectOptions projectOptions) {
+		this.projectOptions = projectOptions;
+	}
 	
 }
