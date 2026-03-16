@@ -1,0 +1,202 @@
+<#-- UIClass action permissions — default true when no UIClass stereotype is applied -->
+<#assign canCreate = !(class.uiClass??) || (class.uiClass.create!true) />
+<#assign canUpdate = !(class.uiClass??) || (class.uiClass.update!true) />
+
+<#if class.name == "Appointment">
+
+<h2 style="text-align:center; font-weight:400; margin-bottom:30px;">Book Appointment</h2>
+
+<form ng-init="initAddEditPage(); getOne();" style="max-width:500px; margin:0 auto;">
+
+	<div style="margin-bottom:12px;">
+		<select class="form-control" ng-model="appointment.treatment" style="border-radius:4px; border:1px solid #ccc;">
+			<option value="" disabled selected>Service</option>
+			<option ng-repeat="item in treatmentList" ng-value="item">{{ item.name }}</option>
+		</select>
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="text" class="form-control" placeholder="First Name" ng-model="clientData.firstName" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="text" class="form-control" placeholder="Last Name" ng-model="clientData.lastName" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="email" class="form-control" placeholder="Email" ng-model="clientData.email" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<div style="margin-bottom:24px;">
+		<input type="datetime-local" class="form-control" placeholder="Date and Time" ng-model="appointment.dateTime" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<#if canCreate>
+	<button ng-click="bookAppointment()" type="button" class="btn btn-salon btn-block">Book</button>
+	</#if>
+
+</form>
+
+<div style="max-width:500px; margin:10px auto;">
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+
+<#elseif class.name == "Review">
+
+<h2 style="text-align:center; font-weight:bold; margin-bottom:24px;">Leave a review</h2>
+
+<!-- Step 1: email lookup -->
+<div ng-if="!clientFound" style="max-width:500px; margin:0 auto; text-align:center;">
+	<p style="color:#555; margin-bottom:20px;">Enter your email to continue</p>
+	<div style="display:flex; gap:8px; justify-content:center; margin-bottom:12px;">
+		<input type="email" class="form-control" placeholder="Your email" ng-model="search.email"
+			style="max-width:320px; border-radius:4px; border:1px solid #ccc; padding:10px;"
+			ng-keydown="$event.key === 'Enter' && getClientByEmail()">
+		<button class="btn btn-salon" ng-click="getClientByEmail()">Continue</button>
+	</div>
+	<p ng-if="clientNotFound" style="color:#c0392b; font-size:14px;">No account found with that email. Please book an appointment first.</p>
+</div>
+
+<!-- Step 2: review form (shown only after email is matched) -->
+<form ng-if="clientFound" ng-init="initAddEditPage(); loadTreatments();" style="max-width:500px; margin:0 auto; text-align:center;">
+
+	<div style="margin-bottom:12px;">
+		<select class="form-control" ng-model="review.treatment" style="border-radius:4px; border:1px solid #ccc; text-align:left;">
+			<option value="" disabled selected>Service</option>
+			<option ng-repeat="item in treatmentList" ng-value="item">{{ item.name }}</option>
+		</select>
+	</div>
+
+	<div style="margin-bottom:16px;">
+		<span ng-repeat="n in [1,2,3,4,5]"
+			ng-click="review.rating = n"
+			style="font-size:36px; cursor:pointer; margin:0 4px;"
+			ng-style="{'color': n <= review.rating ? '#333' : 'transparent', 'text-shadow': n <= review.rating ? 'none' : '0 0 0 #555', '-webkit-text-stroke': '1.5px #555'}">&#9733;</span>
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<textarea class="form-control" rows="5"
+			placeholder="comment.."
+			ng-model="review.comment"
+			style="border-radius:4px; border:1px solid #ccc; padding:10px; resize:none;"></textarea>
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="date" class="form-control" ng-model="review.reviewDate" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<#if canCreate>
+	<button ng-click="open()" type="button" class="btn btn-salon btn-block">Send</button>
+	</#if>
+
+</form>
+
+<script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Confirmation</h3>
+	</div>
+	<div class="modal-body">
+		<p>Are you sure you want to submit this review?</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="confirm()">Confirm</button>
+		<button class="btn btn-warning" type="button" ng-click="revert()">Cancel</button>
+	</div>
+</script>
+
+<div class="row" style="margin-top:10px;">
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+
+<#else>
+
+<h2 style="text-align:center; font-weight:400; margin-bottom:30px;">{{addEditHeading}} ${class.name}</h2>
+
+<form ng-init="initAddEditPage(); getOne();" style="max-width:500px; margin:0 auto;">
+
+	<#if persistentProperties??>
+		<#list persistentProperties as property>
+			<#if !property.isId>
+				<#-- Only render fields where editable is true or no UIProperty is set -->
+				<#if !property.uiProperty?? || (property.uiProperty.editable!true)>
+				<#-- Check if the property type matches a known enumeration -->
+				<#assign isEnum = false />
+				<#if enumerations??>
+					<#list enumerations as enumType>
+						<#if enumType.name == property.type>
+							<#assign isEnum = true />
+							<#assign currentEnum = enumType />
+						</#if>
+					</#list>
+				</#if>
+
+				<div style="margin-bottom:12px;">
+					<#if isEnum>
+						<select class="form-control" ng-model="${class.name?uncap_first}.${property.columnName}" style="border-radius:4px; border:1px solid #ccc;">
+							<#list currentEnum.values as val>
+								<option value="${val}">${val}</option>
+							</#list>
+						</select>
+					<#else>
+						<#assign fType = "text" />
+						<#if property.uiProperty??>
+							<#assign fType = property.uiProperty.formType />
+						</#if>
+						<input type="${fType}" class="form-control"
+							placeholder="<#if property.uiProperty?? && property.uiProperty.label??>${property.uiProperty.label}<#else>${property.columnName?cap_first}</#if>"
+							ng-model="${class.name?uncap_first}.${property.columnName}"
+							style="border-radius:4px; border:1px solid #ccc; padding:10px;"
+							<#if property.uiProperty?? && property.uiProperty.readOnly?? && property.uiProperty.readOnly == true>ng-disabled="addEditHeading == 'Edit'"</#if>>
+					</#if>
+				</div>
+				</#if>
+			</#if>
+		</#list>
+	</#if>
+
+	<#if referencedProperties??>
+		<#list referencedProperties as property>
+			<#if property.connectionType?string == "MANY_TO_ONE">
+				<#assign dispProp = "name" />
+				<#if property.uiProperty?? && property.uiProperty.presPropertyName??>
+					<#assign dispProp = property.uiProperty.presPropertyName />
+				</#if>
+				<div style="margin-bottom:12px;">
+					<select class="form-control" ng-model="${class.name?uncap_first}.${property.name}" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+						<option value="" disabled selected><#if property.uiProperty?? && property.uiProperty.label??>${property.uiProperty.label}<#else>${property.name?cap_first}</#if></option>
+						<option ng-repeat="item in ${property.type?uncap_first}List"
+								ng-value="item">{{ item.${dispProp} }}</option>
+					</select>
+				</div>
+			</#if>
+		</#list>
+	</#if>
+
+	<#if canCreate && canUpdate>
+	<button ng-click="open()" type="button" class="btn btn-salon btn-block" style="margin-top:12px;">Save</button>
+	<#elseif canCreate>
+	<button ng-if="addEditHeading == 'Add'" ng-click="open()" type="button" class="btn btn-salon btn-block" style="margin-top:12px;">Save</button>
+	<#elseif canUpdate>
+	<button ng-if="addEditHeading == 'Edit'" ng-click="open()" type="button" class="btn btn-salon btn-block" style="margin-top:12px;">Save</button>
+	</#if>
+
+</form>
+
+<script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Confirmation</h3>
+	</div>
+	<div class="modal-body">
+		<p>Are you sure you want to save this ${class.name}?</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="confirm()">Confirm</button>
+		<button class="btn btn-warning" type="button" ng-click="revert()">Cancel</button>
+	</div>
+</script>
+
+<div class="row" style="margin-top:10px;">
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+
+</#if>
