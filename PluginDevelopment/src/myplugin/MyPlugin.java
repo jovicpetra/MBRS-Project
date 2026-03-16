@@ -78,6 +78,63 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		GeneratorOptions modelMapperOptions = new GeneratorOptions(outputPath, "model_mapper", "templates", "ModelMapperConfig.java", true, "src/main/java/BeautySalon/config");
 		modelMapperOptions.setTemplateDir(pluginDir + File.separator + modelMapperOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelMapperGenerator", modelMapperOptions);
+
+		// rontend
+
+		// list/table view  (one file per entity class)
+		GeneratorOptions angularTableOptions = new GeneratorOptions(outputPath, "entity_table", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularTableOptions.setTemplateDir(pluginDir + File.separator + angularTableOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularEntityTableGenerator", angularTableOptions);
+
+		// add/edit form  (one file per entity class)
+		GeneratorOptions angularAddOptions = new GeneratorOptions(outputPath, "add_entity", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularAddOptions.setTemplateDir(pluginDir + File.separator + angularAddOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularAddEntityGenerator", angularAddOptions);
+
+		// detail/view page  (one file per entity class)
+		GeneratorOptions angularViewOptions = new GeneratorOptions(outputPath, "view_entity", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularViewOptions.setTemplateDir(pluginDir + File.separator + angularViewOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularViewEntityGenerator", angularViewOptions);
+
+		// index.html
+		GeneratorOptions angularIndexOptions = new GeneratorOptions(outputPath, "index", "templates/frontend", "{0}.html", true, "frontend");
+		angularIndexOptions.setTemplateDir(pluginDir + File.separator + angularIndexOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularIndexPageGenerator", angularIndexOptions);
+
+		// app.js
+		GeneratorOptions angularAppOptions = new GeneratorOptions(outputPath, "app", "templates/frontend", "{0}.js", true, "frontend/js");
+		angularAppOptions.setTemplateDir(pluginDir + File.separator + angularAppOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularAppGenerator", angularAppOptions);
+
+		// controllers
+		GeneratorOptions angularCtrlOptions = new GeneratorOptions(outputPath, "angular_controller", "templates/frontend", "{0}.js", true, "frontend/js");
+		angularCtrlOptions.setTemplateDir(pluginDir + File.separator + angularCtrlOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularControllersGenerator", angularCtrlOptions);
+
+		// services
+		GeneratorOptions angularSvcOptions = new GeneratorOptions(outputPath, "angular_service", "templates/frontend", "{0}.js", true, "frontend/js");
+		angularSvcOptions.setTemplateDir(pluginDir + File.separator + angularSvcOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularServicesGenerator", angularSvcOptions);
+
+		// route config
+		GeneratorOptions angularRoutesOptions = new GeneratorOptions(outputPath, "angular_routes", "templates/frontend", "{0}.js", true, "frontend/js");
+		angularRoutesOptions.setTemplateDir(pluginDir + File.separator + angularRoutesOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularRoutesGenerator", angularRoutesOptions);
+
+		// landing page
+		GeneratorOptions angularLandingOptions = new GeneratorOptions(outputPath, "landing", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularLandingOptions.setTemplateDir(pluginDir + File.separator + angularLandingOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularLandingPageGenerator", angularLandingOptions);
+
+		// client my-appointments page
+		GeneratorOptions angularMyAppointmentsOptions = new GeneratorOptions(outputPath, "client_my_appointments", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularMyAppointmentsOptions.setTemplateDir(pluginDir + File.separator + angularMyAppointmentsOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularMyAppointmentsGenerator", angularMyAppointmentsOptions);
+
+		// admin treatment management table
+		GeneratorOptions angularTreatmentAdminOptions = new GeneratorOptions(outputPath, "treatment_admin", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularTreatmentAdminOptions.setTemplateDir(pluginDir + File.separator + angularTreatmentAdminOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularTreatmentAdminGenerator", angularTreatmentAdminOptions);
 	}
 
 	private NMAction[] getSubmenuActions()
@@ -100,7 +157,7 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		Properties prop = new Properties();
 		InputStream input = null;
 		try {
-			input = Files.newInputStream(Paths.get("resources/ProjectOptions.xml"));
+			input = Files.newInputStream(Paths.get(pluginDir + File.separator + "ProjectOptions.xml"));
 			// load a properties file
 			prop.load(input);
 			// get the property value

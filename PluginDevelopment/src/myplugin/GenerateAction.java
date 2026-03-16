@@ -18,6 +18,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
+import myplugin.generator.AngularGenerator;
 import myplugin.generator.BEGenerator;
 import myplugin.generator.EnumGenerator;
 import myplugin.generator.fmmodel.FMModel;
@@ -80,7 +81,62 @@ class GenerateAction extends MDAction{
 			BEGenerator modelMapperGenerator = new BEGenerator(go9);
 			modelMapperGenerator.generate();
 
-			/**  @ToDo: Also call other generators */ 
+			// Frontend generation
+
+			GeneratorOptions goAngularTable = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularEntityTableGenerator");
+			AngularGenerator angularTableGenerator = new AngularGenerator(goAngularTable);
+			angularTableGenerator.generate();
+
+			GeneratorOptions goAngularAdd = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularAddEntityGenerator");
+			AngularGenerator angularAddGenerator = new AngularGenerator(goAngularAdd);
+			angularAddGenerator.generate();
+
+			GeneratorOptions goAngularView = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularViewEntityGenerator");
+			AngularGenerator angularViewGenerator = new AngularGenerator(goAngularView);
+			angularViewGenerator.generate();
+
+			// index page
+			GeneratorOptions goAngularIndex = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularIndexPageGenerator");
+			AngularGenerator angularIndexGenerator = new AngularGenerator(goAngularIndex);
+			angularIndexGenerator.generateIndexHtml();
+
+			// app module
+			GeneratorOptions goAngularApp = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularAppGenerator");
+			AngularGenerator angularAppGenerator = new AngularGenerator(goAngularApp);
+			angularAppGenerator.generateJSScript();
+
+			// controllers
+			GeneratorOptions goAngularCtrl = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularControllersGenerator");
+			AngularGenerator angularCtrlGenerator = new AngularGenerator(goAngularCtrl);
+			angularCtrlGenerator.generateJSScript();
+
+			// services
+			GeneratorOptions goAngularSvc = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularServicesGenerator");
+			AngularGenerator angularSvcGenerator = new AngularGenerator(goAngularSvc);
+			angularSvcGenerator.generateJSScript();
+
+			// routes
+			GeneratorOptions goAngularRoutes = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularRoutesGenerator");
+			AngularGenerator angularRoutesGenerator = new AngularGenerator(goAngularRoutes);
+			angularRoutesGenerator.generateJSScript();
+
+			// landing page
+			GeneratorOptions goAngularLanding = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularLandingPageGenerator");
+			AngularGenerator angularLandingGenerator = new AngularGenerator(goAngularLanding);
+			angularLandingGenerator.generateIndexHtml();
+
+			// client my-appointments page
+			GeneratorOptions goAngularMyAppointments = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularMyAppointmentsGenerator");
+			AngularGenerator angularMyAppointmentsGenerator = new AngularGenerator(goAngularMyAppointments);
+			angularMyAppointmentsGenerator.generateIndexHtml();
+
+			// admin treatment management table
+			GeneratorOptions goAngularTreatmentAdmin = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularTreatmentAdminGenerator");
+			AngularGenerator angularTreatmentAdminGenerator = new AngularGenerator(goAngularTreatmentAdmin);
+			angularTreatmentAdminGenerator.generateIndexHtml();
+
+			// ──────────────────────────────────────────────────────────────────
+
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
 					                         ", package: " + go.getFilePackage());
 			exportToXml();
