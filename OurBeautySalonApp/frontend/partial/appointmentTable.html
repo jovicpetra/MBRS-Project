@@ -1,0 +1,53 @@
+<h2>Appointment</h2>
+
+
+
+<div ng-init="getAll();">
+
+
+<div style="margin:15px 0;">
+	<input class="form-control" type="text"
+		style="max-width:300px; display:inline-block; margin-right:8px;"
+		ng-model="tableSearch.treatment.name"
+		placeholder="Search by Treatment...">
+</div>
+
+<div ng-if="appointmentList.length === 0" class="empty-state" style="margin-top:30px;">
+	<span class="dots">...</span>
+	<p>No appointments yet.</p>
+</div>
+
+<table class="table" style="margin-top:15px;" ng-if="appointmentList.length > 0">
+	<thead>
+		<tr style="border-bottom: 1px solid #eee;">
+			<th style="font-weight:500; color:#555; border:none;">Service Name</th>
+			<th style="font-weight:500; color:#555; border:none;">Date and Time</th>
+			<th style="font-weight:500; color:#555; border:none;">Client Name</th>
+			<th style="font-weight:500; color:#555; border:none;">Status</th>
+			<th style="border:none;"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="appointment in appointmentList | filter:tableSearch" style="border-top: 1px solid #eee;">
+			<td style="border:none; vertical-align:middle;">{{ appointment.treatment.name }}</td>
+			<td style="border:none; vertical-align:middle;">{{ appointment.dateTime | date:'medium' }}</td>
+			<td style="border:none; vertical-align:middle;">{{ appointment.client.firstName }} {{ appointment.client.lastName }}</td>
+			<td style="border:none; vertical-align:middle;">{{ appointment.status }}</td>
+			<td style="border:none; vertical-align:middle; text-align:right;">
+				<button class="btn btn-salon btn-sm"
+					ng-click="setStatus(appointment.id, 'CONFIRMED')"
+					ng-disabled="appointment.status!='WAITING'">Confirm</button>
+				<button class="btn btn-salon btn-sm" style="margin-left:4px;"
+					ng-click="setStatus(appointment.id, 'CANCELED')"
+					ng-disabled="appointment.status=='CANCELED' || appointment.status=='DONE'">Cancel</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<div ng-repeat="alert in alerts">
+	<uib-alert type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+
+</div>

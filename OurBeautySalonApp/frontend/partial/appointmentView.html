@@ -1,0 +1,53 @@
+<h2>View Appointment</h2>
+
+<div ng-init="getOne();">
+
+<form class="form-horizontal">
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Date
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="appointment.dateTime" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Appointment Status
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="appointment.status" disabled>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Client
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="appointment.client.firstName" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Treatment
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="appointment.treatment.name" disabled>
+				</div>
+			</div>
+
+</form>
+
+
+<div style="margin-top:15px;">
+	<a class="btn btn-warning" href="#/admin/appointments/edit/{{ appointment.id }}">Edit</a>
+	<a class="btn btn-default" href="#/admin/appointments">Back</a>
+</div>
+
+</div>

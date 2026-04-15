@@ -1,0 +1,37 @@
+
+
+<h2 style="text-align:center; font-weight:400; margin-bottom:30px;">Book Appointment</h2>
+
+<form ng-init="initAddEditPage(); getOne();" style="max-width:500px; margin:0 auto;">
+
+	<div style="margin-bottom:12px;">
+		<select class="form-control" ng-model="appointment.treatment" style="border-radius:4px; border:1px solid #ccc;">
+			<option value="" disabled selected>Service</option>
+			<option ng-repeat="item in treatmentList" ng-value="item">{{ item.name }}</option>
+		</select>
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="text" class="form-control" placeholder="First Name" ng-model="clientData.firstName" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="text" class="form-control" placeholder="Last Name" ng-model="clientData.lastName" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<div style="margin-bottom:12px;">
+		<input type="email" class="form-control" placeholder="Email" ng-model="clientData.email" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<div style="margin-bottom:24px;">
+		<input type="datetime-local" class="form-control" placeholder="Date and Time" ng-model="appointment.dateTime" style="border-radius:4px; border:1px solid #ccc; padding:10px;">
+	</div>
+
+	<button ng-click="bookAppointment()" type="button" class="btn btn-salon btn-block">Book</button>
+
+</form>
+
+<div style="max-width:500px; margin:10px auto;">
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+

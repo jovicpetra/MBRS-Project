@@ -1,0 +1,89 @@
+<h2>View Client</h2>
+
+<div ng-init="getOne();">
+
+<form class="form-horizontal">
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					First Name
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="client.firstName" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Last Name
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="client.lastName" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					E-mail
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="client.email" disabled>
+				</div>
+			</div>
+
+
+</form>
+
+
+<div ng-init="loadClientDetails();" style="margin-top:30px;">
+
+	<h3 style="font-weight:bold; margin-bottom:15px;">Appointments</h3>
+
+	<div ng-if="!clientAppointments || clientAppointments.length === 0" class="empty-state" style="margin-top:20px;">
+		<span class="dots">...</span>
+		<p>No appointments yet.</p>
+	</div>
+
+	<div ng-if="clientAppointments.length > 0" style="margin-top:20px;">
+		<hr class="salon-divider">
+		<div ng-repeat="a in clientAppointments">
+			<div class="review-row">
+				<span class="review-service">{{ a.treatment.name }}</span>
+				<span class="review-comment">{{ a.status }}</span>
+				<span class="review-date"><em>{{ a.dateTime | date:'MMM, dd yyyy HH:mm' }}</em></span>
+			</div>
+			<hr class="salon-divider">
+		</div>
+	</div>
+
+	<h3 style="font-weight:bold; margin-top:30px; margin-bottom:15px;">Reviews</h3>
+
+	<div ng-if="!clientReviews || clientReviews.length === 0" class="empty-state" style="margin-top:20px;">
+		<span class="dots">...</span>
+		<p>No reviews yet.</p>
+	</div>
+
+	<div ng-if="clientReviews.length > 0" style="margin-top:20px;">
+		<hr class="salon-divider">
+		<div ng-repeat="r in clientReviews">
+			<div class="review-row">
+				<span class="review-star">&#9733;</span>
+				<span class="review-rating">{{ r.rating }}</span>
+				<span class="review-service">{{ r.treatment.name }}</span>
+				<span class="review-comment">"{{ r.comment }}"</span>
+				<span class="review-date"><em>{{ r.reviewDate | date:'mediumDate' }}</em></span>
+			</div>
+			<hr class="salon-divider">
+		</div>
+	</div>
+
+</div>
+
+
+<div style="margin-top:15px;">
+	
+	<a class="btn btn-default" href="#/admin/clients">Back</a>
+</div>
+
+</div>

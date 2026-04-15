@@ -1,0 +1,70 @@
+<h2>View Treatment</h2>
+
+<div ng-init="getOne();">
+
+<form class="form-horizontal">
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Treatment
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="treatment.name" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Description
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="treatment.description" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Price
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="treatment.price" disabled>
+				</div>
+			</div>
+
+
+</form>
+
+		<div class="row" style="margin-top:20px;">
+			<h4>
+				Reviews
+			</h4>
+			<div class="col-md-6">
+				<ul class="list-group">
+					<li class="list-group-item"
+						ng-repeat="item in treatment.reviews">
+						{{ item.id }}
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row" style="margin-top:20px;">
+			<h4>
+				Appointments
+			</h4>
+			<div class="col-md-6">
+				<ul class="list-group">
+					<li class="list-group-item"
+						ng-repeat="item in treatment.appointments">
+						{{ item.id }}
+					</li>
+				</ul>
+			</div>
+		</div>
+
+<div style="margin-top:15px;">
+	<a class="btn btn-warning" href="#/admin/treatments/edit/{{ treatment.id }}">Edit</a>
+	<a class="btn btn-default" href="#/admin/treatments">Back</a>
+</div>
+
+</div>
