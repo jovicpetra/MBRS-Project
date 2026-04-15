@@ -135,6 +135,11 @@ class GenerateAction extends MDAction{
 			AngularGenerator angularTreatmentAdminGenerator = new AngularGenerator(goAngularTreatmentAdmin);
 			angularTreatmentAdminGenerator.generateIndexHtml();
 
+			// client treatment detail page
+			GeneratorOptions goAngularTreatmentDetail = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularTreatmentDetailGenerator");
+			AngularGenerator angularTreatmentDetailGenerator = new AngularGenerator(goAngularTreatmentDetail);
+			angularTreatmentDetailGenerator.generateIndexHtml();
+
 			// ──────────────────────────────────────────────────────────────────
 
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +

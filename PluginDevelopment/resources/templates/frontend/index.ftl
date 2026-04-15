@@ -32,7 +32,7 @@
   .btn-salon.btn-block { display: block; width: 100%; text-align: center; }
   .salon-divider { border: none; border-top: 1px solid #eee; margin: 0; }
   .service-img-placeholder { background: #e0e0e0; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; border-radius: 4px; font-size: 42px; color: #bbb; }
-  .service-card { margin-bottom: 32px; }
+  .service-card { margin-bottom: 32px; border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; }
   .service-card h4 { font-weight: bold; margin-bottom: 8px; }
   .service-card p { color: #555; min-height: 50px; }
   .service-card .service-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; color: #555; }

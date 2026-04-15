@@ -14,7 +14,11 @@ exampleApp.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'partial/treatmentTable.html',
 			controller:  'TreatmentController'
 		})
-		.when('/book', {
+		.when('/treatments/:id', {
+			templateUrl: 'partial/treatmentDetail.html',
+			controller:  'TreatmentController'
+		})
+		.when('/book/:treatmentId?', {
 			templateUrl: 'partial/appointmentCreation.html',
 			controller:  'AppointmentController'
 		})

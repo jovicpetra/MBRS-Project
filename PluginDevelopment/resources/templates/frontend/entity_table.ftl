@@ -1,11 +1,19 @@
 <h2><#if class.uiClass??>${class.uiClass.label!class.name}<#else>${class.name}</#if></h2>
 
-<#-- Scan persistent properties for lookUp=true to build per-field search inputs -->
+<#-- Scan persistent AND referenced properties for lookUp=true to build per-field search inputs -->
 <#assign hasLookUp = false />
 <#assign lookUpFields = [] />
 <#if persistentProperties??>
 	<#list persistentProperties as p>
 		<#if !p.isId && p.uiProperty?? && (p.uiProperty.lookUp!false)>
+			<#assign hasLookUp = true />
+			<#assign lookUpFields = lookUpFields + [p] />
+		</#if>
+	</#list>
+</#if>
+<#if referencedProperties??>
+	<#list referencedProperties as p>
+		<#if p.uiProperty?? && (p.uiProperty.lookUp!false)>
 			<#assign hasLookUp = true />
 			<#assign lookUpFields = lookUpFields + [p] />
 		</#if>
@@ -28,8 +36,8 @@
 	<#list lookUpFields as p>
 	<input class="form-control" type="text"
 		style="max-width:300px; display:inline-block; margin-right:8px;"
-		ng-model="tableSearch.${p.columnName}"
-		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${p.columnName?cap_first}</#if>...">
+		ng-model="tableSearch.${(p.columnName)!p.name}<#if p.connectionType??>.${p.uiProperty.presPropertyName}</#if>"
+		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${((p.columnName)!p.name)?cap_first}</#if>...">
 	</#list>
 </div>
 </#if>
@@ -78,8 +86,8 @@
 	<#list lookUpFields as p>
 	<input class="form-control" type="text"
 		style="max-width:300px; display:inline-block; margin-right:8px;"
-		ng-model="tableSearch.${p.columnName}"
-		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${p.columnName?cap_first}</#if>...">
+		ng-model="tableSearch.${(p.columnName)!p.name}<#if p.connectionType??>.${p.uiProperty.presPropertyName}</#if>"
+		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${((p.columnName)!p.name)?cap_first}</#if>...">
 	</#list>
 </div>
 </#if>
@@ -110,8 +118,8 @@
 	<#list lookUpFields as p>
 	<input class="form-control" type="text"
 		style="max-width:300px; display:inline-block; margin-right:8px;"
-		ng-model="tableSearch.${p.columnName}"
-		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${p.columnName?cap_first}</#if>...">
+		ng-model="tableSearch.${(p.columnName)!p.name}<#if p.connectionType??>.${p.uiProperty.presPropertyName}</#if>"
+		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${((p.columnName)!p.name)?cap_first}</#if>...">
 	</#list>
 </div>
 </#if>
@@ -121,21 +129,22 @@
 	<p>No services available yet.</p>
 </div>
 
-<div class="row" style="margin-top:30px;" ng-if="treatmentList.length > 0">
+<div class="row" style="margin-top:30px; display: flex; gap: 20px;" ng-if="treatmentList.length > 0">
 	<div class="col-sm-4 service-card" ng-repeat="treatment in treatmentList | filter:tableSearch">
-		<div class="service-img-placeholder">&#128247;</div>
-		<h4><strong>{{ treatment.name }}</strong></h4>
-		<p>{{ treatment.description }}</p>
+		<a href="#/treatments/{{ treatment.id }}" style="text-decoration: none; color: inherit; display: block;">
+			<h4><strong>{{ treatment.name }}</strong></h4>
+			<p>{{ treatment.description }}</p>
+		</a>
 		<div class="service-footer">
 			<span>RSD {{ treatment.price }}</span>
-			<a class="btn btn-salon" href="#/book">Book</a>
+			<a class="btn btn-salon" href="#/treatments/{{ treatment.id }}">Details</a>
 		</div>
 	</div>
 </div>
 
 <#else>
 
-<#if canCreate>
+<#if canCreate && class.name != "Client">
 <a class="btn btn-salon" href="#/admin/${class.name?uncap_first}s/add">Add new ${class.name}</a>
 </#if>
 
@@ -144,8 +153,8 @@
 	<#list lookUpFields as p>
 	<input class="form-control" type="text"
 		style="max-width:300px; display:inline-block; margin-right:8px;"
-		ng-model="tableSearch.${p.columnName}"
-		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${p.columnName?cap_first}</#if>...">
+		ng-model="tableSearch.${(p.columnName)!p.name}<#if p.connectionType??>.${p.uiProperty.presPropertyName}</#if>"
+		placeholder="Search by <#if p.uiProperty.label??>${p.uiProperty.label}<#else>${((p.columnName)!p.name)?cap_first}</#if>...">
 	</#list>
 </div>
 </#if>
@@ -200,8 +209,8 @@
 			<#if showActions>
 			<td>
 				<#if canView><a class="btn btn-salon btn-sm" href="#/admin/${class.name?uncap_first}s/{{ ${class.name?uncap_first}.id }}">view</a></#if>
-				<#if canUpdate><a class="btn btn-salon btn-sm" href="#/admin/${class.name?uncap_first}s/edit/{{ ${class.name?uncap_first}.id }}" style="margin-left:4px;">edit</a></#if>
-				<#if canDelete><button class="btn btn-salon btn-sm" ng-click="remove(${class.name?uncap_first}.id)" style="margin-left:4px;">delete</button></#if>
+				<#if canUpdate && class.name != "Client"><a class="btn btn-salon btn-sm" href="#/admin/${class.name?uncap_first}s/edit/{{ ${class.name?uncap_first}.id }}" style="margin-left:4px;">edit</a></#if>
+				<#if canDelete && class.name != "Client"><button class="btn btn-salon btn-sm" ng-click="remove(${class.name?uncap_first}.id)" style="margin-left:4px;">delete</button></#if>
 			</td>
 			</#if>
 		</tr>

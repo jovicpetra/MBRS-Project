@@ -135,6 +135,11 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		GeneratorOptions angularTreatmentAdminOptions = new GeneratorOptions(outputPath, "treatment_admin", "templates/frontend", "{0}.html", true, "frontend/partial");
 		angularTreatmentAdminOptions.setTemplateDir(pluginDir + File.separator + angularTreatmentAdminOptions.getTemplateDir());
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularTreatmentAdminGenerator", angularTreatmentAdminOptions);
+
+		// client treatment detail page
+		GeneratorOptions angularTreatmentDetailOptions = new GeneratorOptions(outputPath, "client_treatment_detail", "templates/frontend", "{0}.html", true, "frontend/partial");
+		angularTreatmentDetailOptions.setTemplateDir(pluginDir + File.separator + angularTreatmentDetailOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularTreatmentDetailGenerator", angularTreatmentDetailOptions);
 	}
 
 	private NMAction[] getSubmenuActions()

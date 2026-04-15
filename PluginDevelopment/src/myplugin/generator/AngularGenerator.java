@@ -156,6 +156,8 @@ public class AngularGenerator extends BasicGenerator {
 			generatedFileName = "myAppointments";
 		} else if (templateName.startsWith("treatment_admin")) {
 			generatedFileName = "treatmentAdmin";
+		} else if (templateName.startsWith("client_treatment_detail")) {
+			generatedFileName = "treatmentDetail";
 		}
 
 		String fullPath = outputPath

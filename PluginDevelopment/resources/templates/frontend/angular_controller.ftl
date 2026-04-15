@@ -14,6 +14,13 @@ exampleApp.controller('${class.name}Controller', function($scope, $location, $ro
 			</#if>
 		</#list>
 	</#if>
+	<#if class.name == "Treatment">
+	reviewService,
+	</#if>
+	<#if class.name == "Client">
+	appointmentService,
+	reviewService,
+	</#if>
 	${class.name?uncap_first}Service) {
 
 	$scope.alerts = [];
@@ -49,6 +56,16 @@ exampleApp.controller('${class.name}Controller', function($scope, $location, $ro
 		${prop.type?uncap_first}Service.getAll()
 			.then(function(response) {
 				$scope.${prop.type?uncap_first}List = response.data;
+				<#if class.name == "Appointment" && prop.type == "Treatment">
+				if ($routeParams.treatmentId) {
+					var preselected = response.data.find(function(t) {
+						return t.id === parseInt($routeParams.treatmentId);
+					});
+					if (preselected) {
+						$scope.${class.name?uncap_first}.${prop.name} = preselected;
+					}
+				}
+				</#if>
 			});
 				</#if>
 			</#list>
@@ -73,6 +90,54 @@ exampleApp.controller('${class.name}Controller', function($scope, $location, $ro
 			});
 	};
 
+	<#if class.name == "Treatment">
+	$scope.getStars = function(rating) {
+		var stars = '';
+		for (var i = 0; i < 5; i++) {
+			stars += i < rating ? '\u2605' : '\u2606';
+		}
+		return stars;
+	};
+
+	$scope.loadTreatmentDetail = function() {
+		if (!$routeParams.id) return;
+		treatmentService.getOne($routeParams.id)
+			.then(function(response) {
+				$scope.selectedTreatment = response.data;
+				reviewService.getAll().then(function(res) {
+					$scope.treatmentReviews = res.data.filter(function(r) {
+						return r.treatment && r.treatment.id === $scope.selectedTreatment.id;
+					});
+					if ($scope.treatmentReviews.length > 0) {
+						var sum = $scope.treatmentReviews.reduce(function(acc, r) { return acc + r.rating; }, 0);
+						$scope.averageRating = (sum / $scope.treatmentReviews.length).toFixed(1);
+					}
+				});
+			}, function() {
+				$scope.alerts.push({ msg: 'Treatment not found.', type: 'danger' });
+			});
+	};
+	</#if>
+
+	<#if class.name == "Client">
+	$scope.loadClientDetails = function() {
+		if (!$routeParams.id) return;
+		clientService.getOne($routeParams.id).then(function(response) {
+			$scope.client = response.data;
+			appointmentService.getAll().then(function(res) {
+				$scope.clientAppointments = res.data.filter(function(a) {
+					return a.client && a.client.id === $scope.client.id;
+				});
+			});
+			reviewService.getAll().then(function(res) {
+				$scope.clientReviews = res.data.filter(function(r) {
+					return r.client && r.client.id === $scope.client.id;
+				});
+			});
+		});
+	};
+	</#if>
+
 	<#if class.name == "Appointment">
 	// Override getAll to auto-mark past appointments as DONE
 	$scope.getAll = function() {
@@ -94,6 +159,37 @@ exampleApp.controller('${class.name}Controller', function($scope, $location, $ro
 	$scope.clientData = {};
 
 	$scope.bookAppointment = function() {
+		var appointmentDate = new Date($scope.appointment.dateTime);
+		if (!$scope.appointment.dateTime || appointmentDate <= new Date()) {
+			$scope.alerts.push({ msg: 'Appointment must be scheduled in the future.', type: 'danger' });
+			return;
+		}
+
+		var DURATION_MS = 60 * 60 * 1000; // 1 hour per appointment
+		var newStart = appointmentDate.getTime();
+		var newEnd = newStart + DURATION_MS;
+
+		appointmentService.getAll().then(function(allRes) {
+			var active = allRes.data.filter(function(a) {
+				return a.status === 'WAITING' || a.status === 'CONFIRMED';
+			});
+			var overlap = active.some(function(a) {
+				var existStart = new Date(a.dateTime).getTime();
+				var existEnd = existStart + DURATION_MS;
+				return newStart < existEnd && newEnd > existStart;
+			});
+			if (overlap) {
+				$scope.alerts.push({ msg: 'This time slot overlaps with an existing appointment. Please choose a different time.', type: 'danger' });
+				return;
+			}
+
+			$scope.proceedWithBooking();
+		}, function() {
+			$scope.alerts.push({ msg: 'Error checking appointment availability.', type: 'danger' });
+		});
+	};
+
+	$scope.proceedWithBooking = function() {
 		$scope.appointment.status = 'WAITING';
 		var emailLower = ($scope.clientData.email || '').toLowerCase().trim();
 		clientService.getAll().then(function(res) {

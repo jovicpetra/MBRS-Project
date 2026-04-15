@@ -43,7 +43,7 @@
 					<td style="border: none; vertical-align: middle; text-align: right;">
 						<button class="btn btn-salon btn-sm"
 							ng-click="setStatus(a.id, 'CANCELED')"
-							ng-disabled="a.status === 'CANCELED'">Cancel</button>
+							ng-disabled="a.status !== 'WAITING' && a.status !== 'CONFIRMED'">Cancel</button>
 					</td>
 				</tr>
 			</tbody>
