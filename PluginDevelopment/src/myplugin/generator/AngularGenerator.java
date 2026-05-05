@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMModel;
@@ -25,6 +26,10 @@ public class AngularGenerator extends BasicGenerator {
 
 	public AngularGenerator(GeneratorOptions generatorOptions) {
 		super(generatorOptions);
+	}
+
+	public AngularGenerator(GeneratorOptions generatorOptions, Configuration configuration) {
+		super(generatorOptions, configuration);
 	}
 
 	/**

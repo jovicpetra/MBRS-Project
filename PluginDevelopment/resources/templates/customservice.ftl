@@ -1,13 +1,15 @@
 package ${app_name}.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public class CustomGenericService<T,ID> {
-@Autowired
-protected JpaRepository<T, ID> repository;
+protected final JpaRepository<T, ID> repository;
+
+public CustomGenericService(JpaRepository<T, ID> repository) {
+this.repository = repository;
+}
 
 public T save(T item) {
 return repository.save(item);
@@ -18,7 +20,7 @@ return repository.findAll();
 }
 
 public T findById(ID id) {
-return repository.findById(id).get();
+return repository.findById(id).orElse(null);
 }
 
 public T update(T item) {

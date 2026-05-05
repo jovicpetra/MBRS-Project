@@ -16,11 +16,16 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import freemarker.template.Configuration;
+
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.AngularGenerator;
+import myplugin.generator.AngularTestGenerator;
 import myplugin.generator.BEGenerator;
+import myplugin.generator.BETestGenerator;
 import myplugin.generator.EnumGenerator;
+import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
@@ -45,100 +50,113 @@ class GenerateAction extends MDAction{
 		
 		try {
 			analyzer.prepareModel();	
+			Configuration freeMarkerConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+
 			GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelGenerator");
-			BEGenerator generator = new BEGenerator(go);
+			BEGenerator generator = new BEGenerator(go, freeMarkerConfiguration);
 			generator.generate();
 
 			GeneratorOptions go2 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EnumGenerator");
-			EnumGenerator enumGenerator = new EnumGenerator(go2);
+			EnumGenerator enumGenerator = new EnumGenerator(go2, freeMarkerConfiguration);
 			enumGenerator.generate();
 
 			GeneratorOptions go3 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("RepositoryGenerator");
-			BEGenerator repoGenerator = new BEGenerator(go3);
+			BEGenerator repoGenerator = new BEGenerator(go3, freeMarkerConfiguration);
 			repoGenerator.generate();
 
 			GeneratorOptions go4 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ApplicationFileGenerator");
-			BEGenerator springApplicationFileGenerator = new BEGenerator(go4);
+			BEGenerator springApplicationFileGenerator = new BEGenerator(go4, freeMarkerConfiguration);
 			springApplicationFileGenerator.generateApplicationFile();
 
 			GeneratorOptions go5 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ControllerGenerator");
-			BEGenerator controllerGenerator = new BEGenerator(go5);
+			BEGenerator controllerGenerator = new BEGenerator(go5, freeMarkerConfiguration);
 			controllerGenerator.generate();
 
 			GeneratorOptions go6 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ServiceGenerator");
-			BEGenerator serviceGenerator = new BEGenerator(go6);
+			BEGenerator serviceGenerator = new BEGenerator(go6, freeMarkerConfiguration);
 			serviceGenerator.generate();
 
 			GeneratorOptions go7 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("CustomServiceGenerator");
-			BEGenerator customServiceGenerator = new BEGenerator(go7);
+			BEGenerator customServiceGenerator = new BEGenerator(go7, freeMarkerConfiguration);
 			customServiceGenerator.generate();
 
 			GeneratorOptions go8 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelDTOGenerator");
-			BEGenerator modelDTOGenerator = new BEGenerator(go8);
+			BEGenerator modelDTOGenerator = new BEGenerator(go8, freeMarkerConfiguration);
 			modelDTOGenerator.generate();
 
 			GeneratorOptions go9 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ModelMapperGenerator");
-			BEGenerator modelMapperGenerator = new BEGenerator(go9);
+			BEGenerator modelMapperGenerator = new BEGenerator(go9, freeMarkerConfiguration);
 			modelMapperGenerator.generate();
 
 			// Frontend generation
 
 			GeneratorOptions goAngularTable = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularEntityTableGenerator");
-			AngularGenerator angularTableGenerator = new AngularGenerator(goAngularTable);
+			AngularGenerator angularTableGenerator = new AngularGenerator(goAngularTable, freeMarkerConfiguration);
 			angularTableGenerator.generate();
 
 			GeneratorOptions goAngularAdd = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularAddEntityGenerator");
-			AngularGenerator angularAddGenerator = new AngularGenerator(goAngularAdd);
+			AngularGenerator angularAddGenerator = new AngularGenerator(goAngularAdd, freeMarkerConfiguration);
 			angularAddGenerator.generate();
 
 			GeneratorOptions goAngularView = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularViewEntityGenerator");
-			AngularGenerator angularViewGenerator = new AngularGenerator(goAngularView);
+			AngularGenerator angularViewGenerator = new AngularGenerator(goAngularView, freeMarkerConfiguration);
 			angularViewGenerator.generate();
 
 			// index page
 			GeneratorOptions goAngularIndex = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularIndexPageGenerator");
-			AngularGenerator angularIndexGenerator = new AngularGenerator(goAngularIndex);
+			AngularGenerator angularIndexGenerator = new AngularGenerator(goAngularIndex, freeMarkerConfiguration);
 			angularIndexGenerator.generateIndexHtml();
 
 			// app module
 			GeneratorOptions goAngularApp = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularAppGenerator");
-			AngularGenerator angularAppGenerator = new AngularGenerator(goAngularApp);
+			AngularGenerator angularAppGenerator = new AngularGenerator(goAngularApp, freeMarkerConfiguration);
 			angularAppGenerator.generateJSScript();
 
 			// controllers
 			GeneratorOptions goAngularCtrl = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularControllersGenerator");
-			AngularGenerator angularCtrlGenerator = new AngularGenerator(goAngularCtrl);
+			AngularGenerator angularCtrlGenerator = new AngularGenerator(goAngularCtrl, freeMarkerConfiguration);
 			angularCtrlGenerator.generateJSScript();
 
 			// services
 			GeneratorOptions goAngularSvc = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularServicesGenerator");
-			AngularGenerator angularSvcGenerator = new AngularGenerator(goAngularSvc);
+			AngularGenerator angularSvcGenerator = new AngularGenerator(goAngularSvc, freeMarkerConfiguration);
 			angularSvcGenerator.generateJSScript();
 
 			// routes
 			GeneratorOptions goAngularRoutes = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularRoutesGenerator");
-			AngularGenerator angularRoutesGenerator = new AngularGenerator(goAngularRoutes);
+			AngularGenerator angularRoutesGenerator = new AngularGenerator(goAngularRoutes, freeMarkerConfiguration);
 			angularRoutesGenerator.generateJSScript();
 
 			// landing page
 			GeneratorOptions goAngularLanding = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularLandingPageGenerator");
-			AngularGenerator angularLandingGenerator = new AngularGenerator(goAngularLanding);
+			AngularGenerator angularLandingGenerator = new AngularGenerator(goAngularLanding, freeMarkerConfiguration);
 			angularLandingGenerator.generateIndexHtml();
 
 			// client my-appointments page
 			GeneratorOptions goAngularMyAppointments = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularMyAppointmentsGenerator");
-			AngularGenerator angularMyAppointmentsGenerator = new AngularGenerator(goAngularMyAppointments);
+			AngularGenerator angularMyAppointmentsGenerator = new AngularGenerator(goAngularMyAppointments, freeMarkerConfiguration);
 			angularMyAppointmentsGenerator.generateIndexHtml();
 
 			// admin treatment management table
 			GeneratorOptions goAngularTreatmentAdmin = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularTreatmentAdminGenerator");
-			AngularGenerator angularTreatmentAdminGenerator = new AngularGenerator(goAngularTreatmentAdmin);
+			AngularGenerator angularTreatmentAdminGenerator = new AngularGenerator(goAngularTreatmentAdmin, freeMarkerConfiguration);
 			angularTreatmentAdminGenerator.generateIndexHtml();
 
 			// client treatment detail page
 			GeneratorOptions goAngularTreatmentDetail = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularTreatmentDetailGenerator");
-			AngularGenerator angularTreatmentDetailGenerator = new AngularGenerator(goAngularTreatmentDetail);
+			AngularGenerator angularTreatmentDetailGenerator = new AngularGenerator(goAngularTreatmentDetail, freeMarkerConfiguration);
 			angularTreatmentDetailGenerator.generateIndexHtml();
+
+			// Backend and frontend test generation
+			java.util.List<FMClass> entities = FMModel.getInstance().getClasses();
+			GeneratorOptions goBackendTests = ProjectOptions.getProjectOptions().getGeneratorOptions().get("BETestGenerator");
+			BETestGenerator beTestGenerator = new BETestGenerator(goBackendTests, freeMarkerConfiguration);
+			beTestGenerator.generateAllTests(entities, go.getOutputPath() + "/src/test/java");
+
+			java.util.List<FMClass> uiClasses = FMModel.getInstance().getClasses();
+			GeneratorOptions goAngularTests = ProjectOptions.getProjectOptions().getGeneratorOptions().get("AngularTestGenerator");
+			AngularTestGenerator angularTestGenerator = new AngularTestGenerator(goAngularTests, freeMarkerConfiguration);
+			angularTestGenerator.generateAllTests(uiClasses, goAngularApp.getOutputPath() + "/src/test/js");
 
 			// ──────────────────────────────────────────────────────────────────
 

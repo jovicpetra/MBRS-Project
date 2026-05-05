@@ -4,11 +4,11 @@ import ${app_name}.models.*;
 import ${app_name}.models.dto.*;
 import ${app_name}.services.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +17,13 @@ import java.util.List;
 @RequestMapping(value = "/api/${class.name?lower_case}")
 public class ${class.name}Controller {
 
-    @Autowired
-    private ${class.name}Service ${class.name?lower_case}Service;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ${class.name}Service ${class.name?lower_case}Service;
+    private final ModelMapper modelMapper;
+
+    public ${class.name}Controller(${class.name}Service ${class.name?lower_case}Service, ModelMapper modelMapper) {
+        this.${class.name?lower_case}Service = ${class.name?lower_case}Service;
+        this.modelMapper = modelMapper;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<${class.name}DTO>> getAll() {
@@ -39,7 +42,7 @@ public class ${class.name}Controller {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<${class.name}DTO> getById(@PathVariable Integer id) {
+    public ResponseEntity<${class.name}DTO> getById(@PathVariable ${idFieldType} id) {
         ${class.name} entity = ${class.name?lower_case}Service.findById(id);
         if (entity == null) {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.NOT_FOUND);
@@ -60,8 +63,8 @@ public class ${class.name}Controller {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
     public ResponseEntity<${class.name}DTO> updateById(@RequestBody @Valid ${class.name}DTO dto,
-                                                                 @PathVariable Integer id) {
-        if (id != dto.getId()) {
+                                                                 @PathVariable ${idFieldType} id) {
+        if (!Objects.equals(id, dto.get${idFieldAccessor}())) {
             return new ResponseEntity<${class.name}DTO>(HttpStatus.BAD_REQUEST);
         }
 
@@ -74,8 +77,8 @@ public class ${class.name}Controller {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteById(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteById(@PathVariable ${idFieldType} id) {
         ${class.name?lower_case}Service.delete(id);
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,5 +1,6 @@
 package myplugin.generator;
 
+import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import myplugin.generator.fmmodel.FMEnumeration;
 import myplugin.generator.fmmodel.FMModel;
@@ -16,6 +17,10 @@ public class EnumGenerator extends BasicGenerator {
 
     public EnumGenerator(GeneratorOptions generatorOptions) {
         super(generatorOptions);
+    }
+
+    public EnumGenerator(GeneratorOptions generatorOptions, Configuration configuration) {
+        super(generatorOptions, configuration);
     }
 
     public void generate() {
