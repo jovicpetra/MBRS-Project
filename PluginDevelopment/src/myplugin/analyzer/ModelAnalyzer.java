@@ -115,6 +115,7 @@ public class ModelAnalyzer {
 				referencedProperty.setType(prop.getType());
 				referencedProperty.setLower(prop.getLower());
 				referencedProperty.setUpper(prop.getUpper());
+				referencedProperty.setUiProperty(prop.getUiProperty());
 				fmClass.addReferencedProperty(referencedProperty);
 			}
 			PersistentProperty persistentProperty = prop.getPersistentProperty();
@@ -124,6 +125,7 @@ public class ModelAnalyzer {
 				persistentProperty.setType(prop.getType());
 				persistentProperty.setLower(prop.getLower());
 				persistentProperty.setUpper(prop.getUpper());
+				persistentProperty.setUiProperty(prop.getUiProperty());
 				fmClass.addPersistentProperty(persistentProperty);
 			}
 		}
@@ -141,7 +143,41 @@ public class ModelAnalyzer {
 		if (entityStereotype != null) {
 			String tableName = extractStereotypeProperty(cl, entityStereotype, "tableName");
 			Entity entity = new Entity(tableName);
-			fmClass.setEntity(entity);  // Set entity details (table name)
+			fmClass.setEntity(entity);
+		}
+
+		// Handle UIClass stereotype.
+		// UIClass generalizes UIElement in the profile, so 'label' is an inherited tag —
+		// getOwnedAttribute() won't return it. Use getStereotypePropertyValue directly to
+		// traverse the stereotype hierarchy and read 'label'.
+		Stereotype uiClassStereotype = StereotypesHelper.getAppliedStereotypeByString(cl, "UIClass");
+		if (uiClassStereotype != null) {
+			String label = null;
+			List labelVal = StereotypesHelper.getStereotypePropertyValue(cl, uiClassStereotype, "label");
+			if (!labelVal.isEmpty()) label = (String) labelVal.get(0);
+
+			Boolean create = true;
+			Boolean update = true;
+			Boolean delete = true;
+			Boolean view   = true;
+
+			List<Property> tags = uiClassStereotype.getOwnedAttribute();
+			for (int j = 0; j < tags.size(); j++) {
+				Property tagDef = tags.get(j);
+				String tagName = tagDef.getName();
+				List value = StereotypesHelper.getStereotypePropertyValue(cl, uiClassStereotype, tagName);
+				if (value.size() > 0) {
+					switch (tagName) {
+						case "add":    create = (Boolean) value.get(0); break;
+						case "update": update = (Boolean) value.get(0); break;
+						case "delete": delete = (Boolean) value.get(0); break;
+						case "view":   view   = (Boolean) value.get(0); break;
+					}
+				}
+			}
+
+			UIClass uiClass = new UIClass(label, create, update, delete, view);
+			fmClass.setUiClass(uiClass);
 		}
 	}
 
@@ -178,9 +214,11 @@ public class ModelAnalyzer {
 		// Process referenced properties
 		processReferencedPropertyStereotypes(p, prop);
 
-		// Process persistent properties (same as before)
+		// Process persistent properties
 		processPersistentPropertyStereotypes(p, prop);
 
+		// Process UI stereotypes
+		processUIPropertyStereotypes(p, prop);
 
 		return prop;
 	}
@@ -314,10 +352,51 @@ public class ModelAnalyzer {
 	}
 
 
+	private void processUIPropertyStereotypes(Property p, FMProperty prop) {
+
+		// Handle UIProperty stereotype.
+		// UIProperty generalizes UIElement in the profile, so 'label' is an inherited tag —
+		// getOwnedAttribute() won't return it. Use getStereotypePropertyValue directly to
+		// traverse the stereotype hierarchy and read 'label'.
+		Stereotype uiPropertyStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "UIProperty");
+		if (uiPropertyStereotype != null) {
+			String label = null;
+			List labelVal = StereotypesHelper.getStereotypePropertyValue(p, uiPropertyStereotype, "label");
+			if (!labelVal.isEmpty()) label = (String) labelVal.get(0);
+			ComponentKind componentKind = null;
+			Boolean editable = false;
+			Boolean readOnly = false;
+			Boolean lookUp   = false;
+			String presPropertyName = null;
+
+			List<Property> tags = uiPropertyStereotype.getOwnedAttribute();
+			for (int j = 0; j < tags.size(); j++) {
+				Property tagDef = tags.get(j);
+				String tagName = tagDef.getName();
+				List value = StereotypesHelper.getStereotypePropertyValue(p, uiPropertyStereotype, tagName);
+				if (value.size() > 0) {
+					switch (tagName) {
+						case "componentKind":
+							EnumerationLiteralImpl ckEnum = (EnumerationLiteralImpl) value.get(0);
+							componentKind = ComponentKind.valueOf(ckEnum.getName());
+							break;
+						case "editable":         editable         = (Boolean) value.get(0); break;
+						case "readOnly":         readOnly         = (Boolean) value.get(0); break;
+						case "lookUp":           lookUp           = (Boolean) value.get(0); break;
+						case "presPropertyName": presPropertyName = (String)  value.get(0); break;
+					}
+				}
+			}
+
+			UIProperty uiProperty = new UIProperty(label, componentKind, editable, readOnly, lookUp, presPropertyName);
+			prop.setUiProperty(uiProperty);
+		}
+	}
+
 	private FMEnumeration getEnumerationData(Enumeration enumeration, String packageName) throws AnalyzeException {
 		FMEnumeration fmEnum = new FMEnumeration(enumeration.getName(), packageName);
 		List<EnumerationLiteral> list = enumeration.getOwnedLiteral();
-		for (int i = 0; i < list.size() - 1; i++) {
+		for (int i = 0; i < list.size(); i++) {
 			EnumerationLiteral literal = list.get(i);
 			if (literal.getName() == null)  
 				throw new AnalyzeException("Items of the enumeration " + enumeration.getName() +

@@ -23,8 +23,10 @@ public class FMClass extends FMType {
 	private List<ReferencedProperty> referencedProperties = new ArrayList<ReferencedProperty>();
 
 	private List<FMMethod> methods = new ArrayList<FMMethod>();
-	
-	
+
+	private UIClass uiClass = null;
+
+
 	public FMClass(String name, String classPackage, String visibility) {
 		super(name, classPackage);		
 		this.visibility = visibility;
@@ -110,6 +112,14 @@ public class FMClass extends FMType {
 
 	public void addReferencedProperty(ReferencedProperty property){
 		referencedProperties.add(property);
+	}
+
+	public UIClass getUiClass() {
+		return uiClass;
+	}
+
+	public void setUiClass(UIClass uiClass) {
+		this.uiClass = uiClass;
 	}
 
 }

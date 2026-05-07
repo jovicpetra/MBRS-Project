@@ -1,0 +1,33 @@
+<h2>Review</h2>
+
+
+
+<div ng-init="getAll();">
+
+
+
+<div ng-if="reviewList.length === 0" class="empty-state" style="margin-top:30px;">
+	<span class="dots">...</span>
+	<p>No reviews yet.</p>
+</div>
+
+<div ng-if="reviewList.length > 0" style="margin-top:20px;">
+	<hr class="salon-divider">
+	<div ng-repeat="review in reviewList | filter:tableSearch">
+		<div class="review-row">
+			<span class="review-star">&#9733;</span>
+			<span class="review-rating">{{ review.rating }}</span>
+			<span class="review-service">{{ review.treatment.name }}</span>
+			<span class="review-comment">"{{ review.comment }}" <em>{{ review.client.firstName }} {{ review.client.lastName }}</em></span>
+			<span class="review-date"><em>{{ review.reviewDate | date:'mediumDate' }}</em></span>
+		</div>
+		<hr class="salon-divider">
+	</div>
+</div>
+
+
+<div ng-repeat="alert in alerts">
+	<uib-alert type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+
+</div>

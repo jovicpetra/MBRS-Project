@@ -1,0 +1,53 @@
+
+
+<h2 style="text-align:center; font-weight:400; margin-bottom:30px;">{{addEditHeading}} Treatment</h2>
+
+<form ng-init="initAddEditPage(); getOne();" style="max-width:500px; margin:0 auto;">
+
+
+				<div style="margin-bottom:12px;">
+						<input type="text" class="form-control"
+							placeholder="Treatment"
+							ng-model="treatment.name"
+							style="border-radius:4px; border:1px solid #ccc; padding:10px;"
+							>
+				</div>
+
+				<div style="margin-bottom:12px;">
+						<input type="text" class="form-control"
+							placeholder="Description"
+							ng-model="treatment.description"
+							style="border-radius:4px; border:1px solid #ccc; padding:10px;"
+							>
+				</div>
+
+				<div style="margin-bottom:12px;">
+						<input type="number" class="form-control"
+							placeholder="Price"
+							ng-model="treatment.price"
+							style="border-radius:4px; border:1px solid #ccc; padding:10px;"
+							>
+				</div>
+
+
+	<button ng-click="open()" type="button" class="btn btn-salon btn-block" style="margin-top:12px;">Save</button>
+
+</form>
+
+<script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Confirmation</h3>
+	</div>
+	<div class="modal-body">
+		<p>Are you sure you want to save this Treatment?</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="confirm()">Confirm</button>
+		<button class="btn btn-warning" type="button" ng-click="revert()">Cancel</button>
+	</div>
+</script>
+
+<div class="row" style="margin-top:10px;">
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+

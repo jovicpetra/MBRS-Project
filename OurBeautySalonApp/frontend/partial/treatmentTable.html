@@ -1,0 +1,38 @@
+<h2>Treatment</h2>
+
+
+
+<div ng-init="getAll();">
+
+
+<div style="margin-bottom:15px;">
+	<input class="form-control" type="text"
+		style="max-width:300px; display:inline-block; margin-right:8px;"
+		ng-model="tableSearch.name"
+		placeholder="Search by Treatment...">
+</div>
+
+<div ng-if="treatmentList.length === 0" class="empty-state" style="margin-top:30px;">
+	<span class="dots">...</span>
+	<p>No services available yet.</p>
+</div>
+
+<div class="row" style="margin-top:30px; display: flex; gap: 20px;" ng-if="treatmentList.length > 0">
+	<div class="col-sm-4 service-card" ng-repeat="treatment in treatmentList | filter:tableSearch">
+		<a href="#/treatments/{{ treatment.id }}" style="text-decoration: none; color: inherit; display: block;">
+			<h4><strong>{{ treatment.name }}</strong></h4>
+			<p>{{ treatment.description }}</p>
+		</a>
+		<div class="service-footer">
+			<span>RSD {{ treatment.price }}</span>
+			<a class="btn btn-salon" href="#/treatments/{{ treatment.id }}">Details</a>
+		</div>
+	</div>
+</div>
+
+
+<div ng-repeat="alert in alerts">
+	<uib-alert type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
+
+</div>

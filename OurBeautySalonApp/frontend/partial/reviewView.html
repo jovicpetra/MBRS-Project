@@ -1,0 +1,62 @@
+<h2>View Review</h2>
+
+<div ng-init="getOne();">
+
+<form class="form-horizontal">
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Rating
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="review.rating" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Comment
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="review.comment" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Date
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="review.reviewDate" disabled>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Client
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="review.client.firstName" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					Treatment
+				</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						ng-model="review.treatment.name" disabled>
+				</div>
+			</div>
+
+</form>
+
+
+<div style="margin-top:15px;">
+	<a class="btn btn-warning" href="#/admin/reviews/edit/{{ review.id }}">Edit</a>
+	<a class="btn btn-default" href="#/admin/reviews">Back</a>
+</div>
+
+</div>

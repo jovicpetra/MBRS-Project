@@ -17,9 +17,11 @@ public class FMProperty extends FMElement  {
 
 	private ReferencedProperty referencedProperty;
 	private PersistentProperty persistentProperty;
-	
+	private UIProperty uiProperty;
+	private Boolean next = false;
+
 	/** @ToDo: Add length, precision, unique... whatever is needed for ejb class generation
-	 * Also, provide these meta-attributes or tags in the modeling languange metaclass or 
+	 * Also, provide these meta-attributes or tags in the modeling languange metaclass or
 	 * stereotype */
 
 	
@@ -75,5 +77,21 @@ public class FMProperty extends FMElement  {
 
 	public PersistentProperty getPersistentProperty() {
 		return persistentProperty;
+	}
+
+	public UIProperty getUiProperty() {
+		return uiProperty;
+	}
+
+	public void setUiProperty(UIProperty uiProperty) {
+		this.uiProperty = uiProperty;
+	}
+
+	public Boolean getNext() {
+		return next;
+	}
+
+	public void setNext(Boolean next) {
+		this.next = next;
 	}
 }
