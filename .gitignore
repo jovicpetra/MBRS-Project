@@ -19,3 +19,6 @@
 target/
 build/
 OurBeautySalonApp/src/main/java/BeautySalon
+OurBeautySalonApp/src/test/
+OurBeautySalonApp/spec/
+OurBeautySalonApp/src/frontend/

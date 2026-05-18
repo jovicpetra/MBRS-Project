@@ -234,7 +234,7 @@ public class BETestGenerator extends BasicGenerator {
 
 	private void writePomIfNeeded(String projectOutputPath, String packageName) throws IOException {
 		File pomFile = new File(projectOutputPath + File.separator + "pom.xml");
-		if (pomFile.exists() && !isOverwrite()) {
+		if (pomFile.exists()) {
 			return;
 		}
 
