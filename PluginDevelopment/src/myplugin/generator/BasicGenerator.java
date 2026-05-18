@@ -26,10 +26,15 @@ public abstract class BasicGenerator {
 	protected String outputFileName;
 	protected boolean overwrite = false;
 	protected String filePackage;
+	protected Configuration injectedCfg;
 	protected Configuration cfg;
 	protected Template template;
 	
 	public BasicGenerator(GeneratorOptions generatorOptions) {
+		this(generatorOptions, null);
+	}
+
+	public BasicGenerator(GeneratorOptions generatorOptions, Configuration configuration) {
 		this.generatorOptions = generatorOptions;
 		this.outputPath = generatorOptions.getOutputPath();
 		this.templateName = generatorOptions.getTemplateName();
@@ -37,6 +42,7 @@ public abstract class BasicGenerator {
 		this.outputFileName = generatorOptions.getOutputFileName();
 		this.overwrite = generatorOptions.getOverwrite();
 		this.filePackage = generatorOptions.getFilePackage();
+		this.injectedCfg = configuration;
 	}
 
 	public void generate() throws IOException {		
@@ -53,7 +59,11 @@ public abstract class BasicGenerator {
 			throw new IOException("Package name for code generation is not defined!");
 		}
 
-		cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);		
+		if (injectedCfg != null) {
+			cfg = injectedCfg;
+		} else {
+			cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+		}
 
 		final String tName = templateName + ".ftl";
 		try {

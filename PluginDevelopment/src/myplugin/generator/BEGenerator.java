@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMModel;
+import myplugin.generator.fmmodel.PersistentProperty;
 import myplugin.generator.options.GeneratorOptions;
 
 /**
@@ -27,6 +29,10 @@ public class BEGenerator extends BasicGenerator {
 		super(generatorOptions);
 	}
 
+	public BEGenerator(GeneratorOptions generatorOptions, Configuration configuration) {
+		super(generatorOptions, configuration);
+	}
+
 	public void generate() {
 
 		try {
@@ -38,6 +44,7 @@ public class BEGenerator extends BasicGenerator {
 		List<FMClass> classes = FMModel.getInstance().getClasses();
 		for (int i = 0; i < classes.size(); i++) {
 			FMClass cl = classes.get(i);
+			PersistentProperty idProperty = getIdProperty(cl);
 			Writer out;
 			Map<String, Object> context = new HashMap<String, Object>();
 			try {
@@ -51,6 +58,9 @@ public class BEGenerator extends BasicGenerator {
 					context.put("referencedProperties", cl.getReferencedProperties());
 					context.put("entity", cl.getEntity());
 					context.put("app_name", "BeautySalon");
+					context.put("idFieldName", idProperty == null ? "id" : idProperty.getName());
+					context.put("idFieldType", idProperty == null ? "Integer" : idProperty.getType());
+					context.put("idFieldAccessor", capitalize(idProperty == null ? "id" : idProperty.getName()));
 					// Ensure the template is available
 					getTemplate().process(context, out);
 					out.flush();
@@ -61,6 +71,26 @@ public class BEGenerator extends BasicGenerator {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 		}
+	}
+
+	private PersistentProperty getIdProperty(FMClass cl) {
+		if (cl == null || cl.getPersistentProperties() == null) {
+			return null;
+		}
+		for (int i = 0; i < cl.getPersistentProperties().size(); i++) {
+			PersistentProperty property = cl.getPersistentProperties().get(i);
+			if (property.getIsId() || "id".equalsIgnoreCase(property.getName())) {
+				return property;
+			}
+		}
+		return cl.getPersistentProperties().isEmpty() ? null : cl.getPersistentProperties().get(0);
+	}
+
+	private String capitalize(String value) {
+		if (value == null || value.isEmpty()) {
+			return value;
+		}
+		return Character.toUpperCase(value.charAt(0)) + value.substring(1);
 	}
 
 	@Override

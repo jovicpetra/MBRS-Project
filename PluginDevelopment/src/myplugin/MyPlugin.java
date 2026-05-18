@@ -79,6 +79,11 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		modelMapperOptions.setTemplateDir(pluginDir + File.separator + modelMapperOptions.getTemplateDir()); //apsolutna putanja
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ModelMapperGenerator", modelMapperOptions);
 
+		// Backend tests (template name is switched internally by BETestGenerator)
+		GeneratorOptions beTestOptions = new GeneratorOptions(outputPath, "ServiceTest", "templates", "{0}.java", true, "src/test/java/BeautySalon/services");
+		beTestOptions.setTemplateDir(pluginDir + File.separator + beTestOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("BETestGenerator", beTestOptions);
+
 		// rontend
 
 		// list/table view  (one file per entity class)
@@ -140,6 +145,11 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		GeneratorOptions angularTreatmentDetailOptions = new GeneratorOptions(outputPath, "client_treatment_detail", "templates/frontend", "{0}.html", true, "frontend/partial");
 		angularTreatmentDetailOptions.setTemplateDir(pluginDir + File.separator + angularTreatmentDetailOptions.getTemplateDir());
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularTreatmentDetailGenerator", angularTreatmentDetailOptions);
+
+		// Frontend tests (template name is switched internally by AngularTestGenerator)
+		GeneratorOptions angularTestOptions = new GeneratorOptions(outputPath, "ControllerSpec", "templates/frontend", "{0}.js", true, "");
+		angularTestOptions.setTemplateDir(pluginDir + File.separator + angularTestOptions.getTemplateDir());
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("AngularTestGenerator", angularTestOptions);
 	}
 
 	private NMAction[] getSubmenuActions()
